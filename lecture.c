@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 #include "lecture.h"
 
 int nb_etudiants = 0;
@@ -58,9 +57,35 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu) {
 
     // Lecture des vilains ennemis
     while (fscanf(fichier, "%d %d %s", &tour, &ligne, type) == 3) {
-        Etudiant* e = creer_etudiant(type[0], 5, ligne, 0, 1, tour); // Exemples de paramètres par défaut
+        Etudiant* e = creer_etudiant(type[0], 5, ligne, 0, 1, tour);
         ajouter_etudiant(jeu, e);
     }
-
     fclose(fichier);
+}
+
+
+// Fonction principale
+int lecture(char *fichier) {
+    Jeu jeu = { .tourelles = NULL, .etudiants = NULL, .cagnotte = 0, .tour = 0 };
+
+    lire_fichier(fichier, &jeu);
+
+    // Exemple d'affichage de la liste des étudiants lus
+    printf("Cagnotte: %d\n", jeu.cagnotte);
+    Etudiant* temp = jeu.etudiants;
+    while (temp) {
+        printf("Tour: %d, Ligne: %d, Type: %d, PV: %d\n",
+               temp->tour, temp->ligne, temp->type, temp->pointsDeVie);
+        temp = temp->next;
+    }
+
+    // Libération de la mémoire
+    temp = jeu.etudiants;
+    while (temp) {
+        Etudiant* suivant = temp->next;
+        free(temp);
+        temp = suivant;
+    }
+
+    return EXIT_SUCCESS;
 }
