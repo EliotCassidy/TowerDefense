@@ -1,22 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lecture.h"
+#include "utils.h"
 
 int nb_etudiants = 0;
 
-Etudiant* creer_etudiant(int type, int pointsDeVie, int ligne, int position, int vitesse, int tour) {
+Etudiant* creer_etudiant(int type, int ligne, int tour) {
     Etudiant* e = malloc(sizeof(Etudiant));
     if (!e) {
         perror("Erreur d'allocation mémoire pour un étudiant");
         exit(EXIT_FAILURE);
     }
     e->type = type;
-    e->pointsDeVie = pointsDeVie;
     e->ligne = ligne;
-    e->position = position;
-    e->vitesse = vitesse;
+    e->position = -1;
     e->tour = tour;
+    switch (type) {
+        case 'Z':
+        e->pointsDeVie = 3;
+        e->vitesse = 1;
+    }
     e->next = NULL;
     e->next_line = NULL;
     e->prev_line = NULL;
@@ -24,19 +27,51 @@ Etudiant* creer_etudiant(int type, int pointsDeVie, int ligne, int position, int
 }
 
 void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant) {
-    if (!jeu->etudiants) {
-        jeu->etudiants = etudiant;
-    }
-    else {
-        Etudiant* temp = jeu->etudiants;
-        while (temp->next) {
-            temp = temp->next;
-        }
-        temp->next = etudiant;
-    
+    Etudiant* temp = jeu->etudiants;
+    Etudiant* prev = NULL;
     nb_etudiants += 1;
+    while (temp && temp->tour <= etudiant->tour) {
+        // Gérer les conflits de position sur la même ligne
+        if (temp->ligne == etudiant->ligne && temp->tour == etudiant->tour) {
+            etudiant->tour += 1;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Insérer l'étudiant dans la liste globale
+    if (prev) {
+        prev->next = etudiant;
+    } else {
+        jeu->etudiants = etudiant; // L'étudiant devient la tête de liste
+    }
+    etudiant->next = temp;
+    etudiant->position = 15 + etudiant->tour;
+
+    // Maintenir les relations `next_line` et `prev_line` pour les étudiants de la même ligne
+    Etudiant* ligne_temp = jeu->etudiants;
+    Etudiant* ligne_prev = NULL;
+
+    while (ligne_temp) {
+        if (ligne_temp->ligne == etudiant->ligne) {
+            if (ligne_temp->position < etudiant->position) {
+                ligne_prev = ligne_temp;
+            } else if (ligne_temp->position > etudiant->position) {
+                etudiant->next_line = ligne_temp;
+                ligne_temp->prev_line = etudiant;
+                break;
+            }
+        }
+        ligne_temp = ligne_temp->next;
+    }
+
+    if (ligne_prev) {
+        ligne_prev->next_line = etudiant;
+        etudiant->prev_line = ligne_prev;
     }
 }
+
+
 
 void lire_fichier(const char* nom_fichier, Jeu* jeu) {
     FILE* fichier = fopen(nom_fichier, "r");
@@ -57,35 +92,18 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu) {
 
     // Lecture des vilains ennemis
     while (fscanf(fichier, "%d %d %s", &tour, &ligne, type) == 3) {
-        Etudiant* e = creer_etudiant(type[0], 5, ligne, 0, 1, tour);
+
+        Etudiant* e = creer_etudiant(type[0], ligne, tour);
         ajouter_etudiant(jeu, e);
     }
     fclose(fichier);
 }
 
-
-// Fonction principale
-int lecture(char *fichier) {
-    Jeu jeu = { .tourelles = NULL, .etudiants = NULL, .cagnotte = 0, .tour = 0 };
-
-    lire_fichier(fichier, &jeu);
-
-    // Exemple d'affichage de la liste des étudiants lus
-    printf("Cagnotte: %d\n", jeu.cagnotte);
-    Etudiant* temp = jeu.etudiants;
-    while (temp) {
-        printf("Tour: %d, Ligne: %d, Type: %d, PV: %d\n",
-               temp->tour, temp->ligne, temp->type, temp->pointsDeVie);
-        temp = temp->next;
-    }
-
-    // Libération de la mémoire
-    temp = jeu.etudiants;
+void libere_jeu(Jeu *jeu) {
+    Etudiant *temp = jeu->etudiants;
     while (temp) {
         Etudiant* suivant = temp->next;
         free(temp);
         temp = suivant;
     }
-
-    return EXIT_SUCCESS;
 }

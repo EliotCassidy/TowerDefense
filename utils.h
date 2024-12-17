@@ -1,5 +1,5 @@
-#ifndef LECTURE_H
-    #define LECTURE_H
+#ifndef UTILS_H
+    #define UTILS_H
 
     typedef struct tourelle {
         int type;
@@ -29,10 +29,23 @@
         int tour;
     } Jeu;
 
+    typedef struct {
+        Etudiant* ligne1;
+        Etudiant* ligne2;
+        Etudiant* ligne3;
+        Etudiant* ligne4;
+        Etudiant* ligne5;
+        Etudiant* ligne6;
+        Etudiant* ligne7;
+    } Plateau;
+
     extern int nb_etudiants;
 
 
-    void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant);
+
     void lire_fichier(const char* nom_fichier, Jeu* jeu);
+    void libere_jeu(Jeu *jeu);
+    int afficher_menu();
+    int visualiser_vague(Jeu *jeu, Plateau *plateau);
 
 #endif
