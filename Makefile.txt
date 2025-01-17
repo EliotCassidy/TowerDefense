@@ -1,0 +1,23 @@
+# Options de compilation
+CFLAGS = -Wall
+
+# Règle principale
+all: projet_c
+
+# Création de l'exécutable
+projet_c: game.o lecture.o ecriture.o Makefile
+	gcc -o projet_c game.o lecture.o ecriture.o
+
+# Compilation des fichiers objets
+game.o: game.c utils.h
+	gcc -o game.o -c game.c $(CFLAGS)
+
+lecture.o: lecture.c utils.h
+	gcc -o lecture.o -c lecture.c $(CFLAGS)
+
+ecriture.o: ecriture.c utils.h
+	gcc -o ecriture.o -c ecriture.c $(CFLAGS)
+
+# Nettoyage des fichiers générés
+clean:
+	rm -rf *.o projet_c
