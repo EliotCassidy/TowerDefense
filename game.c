@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
 
 
-    int choix = afficher_menu();
+    // int choix = afficher_menu();
     // Gérer cas = 2
     // switch (choix) {
     //     case 1:
@@ -28,32 +28,31 @@ int main(int argc, char* argv[]) {
     //         exit(EXIT_FAILURE);
     //         break;
     // }
+
     visualiser_vague(&jeu, &plateau);
     printf("Vous avez %d 🪙\n", jeu.cagnotte);
     placer_tourelles(&jeu);
-    afficher_jeu(&jeu, &plateau);
+    // afficher_jeu(&jeu, &plateau);
     jeu.tour = 1;
     printf("Vous avez %d 🪙\n", jeu.cagnotte);
-    while (jeu.tour < 10) {
-        printf("----------------- TOUR %d -----------------\n", jeu.tour);
-        avancer_ennemies(&jeu);
-        tir_tourelles(&jeu);
-        tir_ennemies(&jeu);
-        avancer_ennemies(&jeu);
-        if (partie_perdu(&jeu)) {
-            procedure_perte(&jeu);
-            break;
-        }
-        placer_tourelles(&jeu);
-        afficher_jeu(&jeu, &plateau);
+    // while (jeu.tour < 10) {
+    //     printf("----------------- TOUR %d -----------------\n", jeu.tour);
+    //     avancer_ennemies(&jeu);
+    //     tir_tourelles(&jeu);
+    //     tir_ennemies(&jeu);
+    //     avancer_ennemies(&jeu);
+    //     if (partie_perdu(&jeu)) {
+    //         procedure_perte(&jeu);
+    //         break;
+    //     }
+    //     placer_tourelles(&jeu);
+    //     afficher_jeu(&jeu, &plateau);
 
-        if (jeu.etudiants == NULL) {
+    //     if (jeu.etudiants == NULL) {
             
-        }
-        jeu.tour++;
-    }
+    //     }
+    //     jeu.tour++;
+    // }
     
     libere_jeu(&jeu);
-}
-
 }

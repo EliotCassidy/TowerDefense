@@ -48,4 +48,11 @@
     int afficher_menu();
     int visualiser_vague(Jeu *jeu, Plateau *plateau);
 
+    int prix(char);
+    void scan_propre(char *output, char* message, int arg_count, ...);
+
+    int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos);
+    void ajout(Jeu *jeu, Tourelle *t);
+
+    void placer_tourelles(Jeu *jeu);
 #endif
