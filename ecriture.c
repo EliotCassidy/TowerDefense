@@ -134,6 +134,14 @@
 //     activerEntreeBufferisee();
 // }
 
+
+void clear() {
+    for (int i = 0; i < 50; i++) {
+        printf("\n");
+    }
+}
+
+
 int visualiser_vague(Jeu *jeu, Plateau *plateau) {
     printf("Vagues :\n");
     Etudiant *maxi = jeu->etudiants;
@@ -188,4 +196,64 @@ int visualiser_vague(Jeu *jeu, Plateau *plateau) {
         }
     }
     return 0;
+}
+
+void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
+    clear();
+    for (int ligne = 1; ligne <= 7; ligne++) {
+        printf("%d|   ", ligne);
+        Etudiant *e = malloc(sizeof(Etudiant));
+        Tourelle *d = malloc(sizeof(Tourelle));
+        switch (ligne) {
+            case 1:
+                e = plateau->ligne1;
+                d = defense->ligne1;
+                break;
+            case 2:
+                e = plateau->ligne2;
+                d = defense->ligne2;
+                break;
+            case 3:
+                e = plateau->ligne3;
+                d = defense->ligne3;
+                break;
+            case 4:
+                e = plateau->ligne4;
+                d = defense->ligne4;
+                break;
+            case 5:
+                e = plateau->ligne5;
+                d = defense->ligne5;
+                break;
+            case 6:
+                e = plateau->ligne6;
+                d = defense->ligne6;
+                break;
+            case 7:
+                e = plateau->ligne7;
+                d = defense->ligne7;
+                break;
+        }
+
+        for (int pos = 1; pos <= 15; pos++) {
+            if (d && e && d->position == pos && e->position == pos) {
+                printf("%c%1d#%1d%c", d->type, d->pointsDeVie, e->pointsDeVie, e->type);
+                d = d->next_line;
+                e = e->next_line;
+            }
+            else if (d && d->position == pos) {
+                printf(" %c%2d#", d->type, d->pointsDeVie);
+                d = d->next_line;
+            }
+            else if (e && e->position == pos) {
+                printf(" %2d%c ", e->pointsDeVie, e->type);
+            }
+            else {
+                printf("  .  ");
+            }
+            if (pos == 15) {
+                printf("\n");
+            }
+        }
+    }
 }

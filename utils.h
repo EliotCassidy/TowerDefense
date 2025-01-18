@@ -8,6 +8,7 @@
         int position;
         int prix;
         struct tourelle* next;
+        struct tourelle* next_line;
     } Tourelle;
 
     typedef struct etudiant {
@@ -39,6 +40,16 @@
         Etudiant* ligne7;
     } Plateau;
 
+        typedef struct {
+        Tourelle* ligne1;
+        Tourelle* ligne2;
+        Tourelle* ligne3;
+        Tourelle* ligne4;
+        Tourelle* ligne5;
+        Tourelle* ligne6;
+        Tourelle* ligne7;
+    } Defense;
+
     extern int nb_etudiants;
 
 
@@ -52,7 +63,9 @@
     void scan_propre(char *output, char* message, int arg_count, ...);
 
     int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos);
-    void ajout(Jeu *jeu, Tourelle *t);
+    void ajout(Jeu *jeu, Tourelle *t, Defense *d);
 
-    void placer_tourelles(Jeu *jeu);
+    void placer_tourelles(Jeu *jeu, Defense *defense);
+    void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense);
+
 #endif

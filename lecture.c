@@ -112,10 +112,10 @@ void libere_jeu(Jeu *jeu) {
         free(temp);
         temp = suivant;
     }
-    Tourelle *temp = jeu->tourelles;
-    while (temp) {
-        Tourelle* suivant = temp->next;
-        free(temp);
-        temp = suivant;
+    Tourelle *tmp = jeu->tourelles;
+    while (tmp) {
+        Tourelle* suivant = tmp->next;
+        free(tmp);
+        tmp = suivant;
     }
 }
