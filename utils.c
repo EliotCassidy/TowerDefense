@@ -80,6 +80,7 @@ int pdv(char Type) {
 }
 
 int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
+
     t->type = infos[0];
     t->prix = prix(infos[0]);
     t->pointsDeVie = pdv(infos[0]);
@@ -105,9 +106,121 @@ int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
 
 }
 
-void ajout(Jeu *jeu, Tourelle *t) {
+void ajout_liste_chainer(Tourelle *ligne, Tourelle *t) {
+    Tourelle *tmp = ligne->next_line;
+    while (tmp != NULL && tmp->position <= t->position) {
+        tmp = tmp->next_line;
+        ligne = ligne->next_line;
+    }
+    ligne->next_line = t;
+    ligne->next_line->next_line = tmp;
+
+}
+
+void ajout(Jeu *jeu, Tourelle *t, Defense *d) {
     Tourelle *tmp = jeu->tourelles;
     Tourelle *last = jeu->tourelles;
+    switch (t->ligne) {
+        case 1:
+            if (d->ligne1 == NULL) {
+                d->ligne1 = t;
+            }
+            else if (d->ligne1->position > t->position) {
+                Tourelle *tmp = d->ligne1;
+                d->ligne1 = t;
+                d->ligne1->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne1, t);
+            }
+            break;
+        case 2:
+            if (d->ligne2 == NULL) {
+                d->ligne2 = t;
+            }
+            else if (d->ligne2->position > t->position) {
+                Tourelle *tmp = d->ligne2;
+                d->ligne2 = t;
+                d->ligne2->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne2, t);
+            }
+            break;
+        case 3:
+            if (d->ligne3 == NULL) {
+                d->ligne3 = t;
+            }
+            else if (d->ligne3->position > t->position) {
+                Tourelle *tmp = d->ligne3;
+                d->ligne3 = t;
+                d->ligne3->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne3, t);
+            }
+            break;
+        case 4:
+            if (d->ligne4 == NULL) {
+                d->ligne4 = t;
+            }
+            else if (d->ligne4->position > t->position) {
+                Tourelle *tmp = d->ligne4;
+                d->ligne4 = t;
+                d->ligne4->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne4, t);
+            }
+            break;
+        case 5:
+            if (d->ligne5 == NULL) {
+                d->ligne5 = t;
+            }
+            else if (d->ligne5->position > t->position) {
+                Tourelle *tmp = d->ligne5;
+                d->ligne5 = t;
+                d->ligne5->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne5, t);
+            }
+            break;
+        case 6:
+            if (d->ligne6 == NULL) {
+                d->ligne6 = t;
+            }
+            else if (d->ligne6->position > t->position) {
+                Tourelle *tmp = d->ligne6;
+                d->ligne6 = t;
+                d->ligne6->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne6, t);
+            }
+            break;
+        case 7:
+            if (d->ligne7 == NULL) {
+                d->ligne7 = t;
+            }
+            else if (d->ligne7->position > t->position) {
+                Tourelle *tmp = d->ligne7;
+                d->ligne7 = t;
+                d->ligne7->next_line = tmp;
+
+            }
+            else {
+                ajout_liste_chainer(d->ligne7, t);
+            }
+            break;
+    }
+
     if (last == NULL) {
         jeu->tourelles = t;
         return;
