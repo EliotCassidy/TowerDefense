@@ -18,6 +18,8 @@
         int position;
         int vitesse;
         int tour;
+        int enDeplacement;
+        int enCombat;
         struct etudiant* next;
         struct etudiant* next_line;
         struct etudiant* prev_line;
@@ -54,7 +56,7 @@
 
 
 
-    void lire_fichier(const char* nom_fichier, Jeu* jeu);
+    void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau);
     void libere_jeu(Jeu *jeu);
     int afficher_menu();
     int visualiser_vague(Jeu *jeu, Plateau *plateau);
@@ -65,7 +67,11 @@
     int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos);
     void ajout(Jeu *jeu, Tourelle *t, Defense *d);
 
-    void placer_tourelles(Jeu *jeu, Defense *defense);
+    void placer_tourelles(Jeu *jeu, Defense *defense, Plateau *plateau);
     void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense);
+    void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour);
+    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense);
+    Etudiant* ligne_i_etudiant(int l, Plateau *plateau);
+    void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p);
 
 #endif

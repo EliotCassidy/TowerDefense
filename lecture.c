@@ -15,6 +15,8 @@ Etudiant* creer_etudiant(int type, int ligne, int tour) {
     e->ligne = ligne;
     e->position = -1;
     e->tour = tour;
+    e->enCombat = 0;
+    e->enDeplacement = 0;
     switch (type) {
         case 'Z':
         e->pointsDeVie = 3;
@@ -32,7 +34,7 @@ Etudiant* creer_etudiant(int type, int ligne, int tour) {
     return e;
 }
 
-void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant) {
+void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant, Plateau *p) {
     Etudiant* temp = jeu->etudiants;
     Etudiant* prev = NULL;
     nb_etudiants += 1;
@@ -75,11 +77,14 @@ void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant) {
         ligne_prev->next_line = etudiant;
         etudiant->prev_line = ligne_prev;
     }
+    if (etudiant->prev_line == NULL) {
+        modifier_ligne_i_etudiant(etudiant->ligne, etudiant, p);
+    }
 }
 
 
 
-void lire_fichier(const char* nom_fichier, Jeu* jeu) {
+void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau) {
     FILE* fichier = fopen(nom_fichier, "r");
     if (!fichier) {
         perror("Erreur lors de l'ouverture du fichier");
@@ -100,7 +105,7 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu) {
     while (fscanf(fichier, "%d %d %s", &tour, &ligne, type) == 3) {
 
         Etudiant* e = creer_etudiant(type[0], ligne, tour);
-        ajouter_etudiant(jeu, e);
+        ajouter_etudiant(jeu, e, plateau);
     }
     fclose(fichier);
 }
