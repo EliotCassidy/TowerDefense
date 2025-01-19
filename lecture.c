@@ -19,14 +19,13 @@ Etudiant* creer_etudiant(int type, int ligne, int tour) {
     e->enDeplacement = 0;
     switch (type) {
         case 'Z':
-        e->pointsDeVie = 3;
-        e->vitesse = 1;
+            e->pointsDeVie = 3;
+            e->vitesse = 1;
+            break;
         case 'Q':
-        e->pointsDeVie = 5;
-        e->vitesse = 1;
-        case '/':
-        e->pointsDeVie = 2;
-        e->vitesse = 2;
+            e->pointsDeVie = 5;
+            e->vitesse = 1;
+            break;
     }
     e->next = NULL;
     e->next_line = NULL;

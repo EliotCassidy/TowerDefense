@@ -40,9 +40,8 @@ int main(int argc, char* argv[]) {
         apparition(&jeu, &plateau, &defense, jeu.tour);
         tir_tourelles(&jeu, &plateau, &defense);
         afficher_jeu(&jeu, &plateau, &defense);
-
-        // tir_ennemies(&jeu);
-        // avancer_ennemies(&jeu);
+        tir_ennemies(&jeu, &plateau, &defense);
+        avancer_ennemies(&jeu, &plateau, &defense);
         // if (partie_perdu(&jeu)) {
         //     procedure_perte(&jeu);
         //     break;

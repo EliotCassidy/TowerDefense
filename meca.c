@@ -24,6 +24,55 @@ Etudiant* ligne_i_etudiant(int l, Plateau *plateau) {
         
     }
 }
+
+Tourelle* ligne_i_tourelle(int l, Defense *defense) {
+    switch (l) {
+        case 1:
+            return defense->ligne1;
+        case 2:
+            return defense->ligne2;
+        case 3:
+            return defense->ligne3;
+        case 4:
+            return defense->ligne4;
+        case 5:
+            return defense->ligne5;
+        case 6:
+            return defense->ligne6;
+        case 7:
+            return defense->ligne7;
+        default:
+            return NULL;
+        
+    }
+}
+
+void modifier_ligne_i_tourelle(int l, Tourelle *e, Defense *d) {
+    switch (l) {
+        case 1:
+            d->ligne1 = e;
+            break;
+        case 2:
+            d->ligne2 = e;
+            break;
+        case 3:
+            d->ligne3 = e;
+            break;
+        case 4:
+            d->ligne4 = e;
+            break;
+        case 5:
+            d->ligne5 = e;
+            break;
+        case 6:
+            d->ligne6 = e;
+            break;
+        case 7:
+            d->ligne7 = e;
+            break;
+    }
+}
+
 void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p) {
     switch (l) {
         case 1:
@@ -68,13 +117,12 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
             }
             else {
                 ajout(jeu, t, defense);
-                Etudiant *ligne = malloc(sizeof(Etudiant));
-                ligne = ligne_i_etudiant(t->ligne, plateau);
+                Etudiant *ligne = ligne_i_etudiant(t->ligne, plateau);
                 while (ligne && ligne->position < t->position) {
                     ligne = ligne->next_line;
                 }
 
-                if (ligne && ligne->position == t->position) {
+                if (ligne != NULL && ligne->position == t->position) {
                     ligne->enCombat = 1;
                     ligne->enDeplacement = 0;
                     while (ligne->next_line != NULL && ligne->next_line->position <= 15 && ligne->next_line->position - ligne->position == 1) {
@@ -130,6 +178,8 @@ int degat(char type) {
             return 1;
         case 'P':
             return 3;
+        case 'Z':
+            return 1;
         default:
             return -1;
     }
@@ -142,19 +192,17 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
         if (degat(t->type) != -1) {
             Etudiant *e = jeu->etudiants;
             Etudiant *prev = jeu->etudiants;
-            if (e->ligne == t->ligne && t->position <= e->position) {
+            if (e->ligne == t->ligne && t->position <= e->position && e->position <= 15) {
                 e->pointsDeVie -= degat(t->type);
                 if (e->pointsDeVie <= 0) {
                     jeu->etudiants = e->next;
                     e->next_line->prev_line = NULL;
                     modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
-
                 }
             }
             e = e->next;
-            while (e && e->position <= 15) {
-                
-                if (e->ligne == t->ligne && t->position <= e->position) {
+            while (e != NULL) {
+                if (e->ligne == t->ligne && t->position <= e->position && e->position <= 15) {
                     e->pointsDeVie -= degat(t->type);
                     if (e->pointsDeVie <= 0) {
                         prev->next = e->next;
@@ -174,4 +222,54 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
         }
         t = t->next;
     }
+}
+
+
+void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
+    Etudiant *e = jeu->etudiants;
+    while (e) {
+        if (e->enCombat == 1) {
+            Tourelle *t = jeu->tourelles;
+            while (t->ligne != e->ligne && t->position != e->position) {
+                t = t->next;
+            }
+            t->pointsDeVie -= degat(e->type);
+
+            if (t->pointsDeVie <= 0) {
+                e->enCombat = 0;
+                e->enDeplacement = 1;
+                while (e->next_line != NULL && e->next_line->enDeplacement == 0 && e->next_line->position <= 15 && e->next_line->enCombat == 0) {
+                    e->next_line->enDeplacement = 1;
+                    e = e->next_line;
+                }
+                Tourelle *tmp_ligne = ligne_i_tourelle(t->ligne, defense);
+                if (tmp_ligne->position == t->position) {
+                    modifier_ligne_i_tourelle(t->ligne, t->next_line, defense);
+                }
+                else {
+                    while (tmp_ligne->next_line->position != t->position) {
+                        tmp_ligne = tmp_ligne->next_line;
+                    }
+                    tmp_ligne->next_line = t->next_line;
+                }
+
+                Tourelle *tmp = jeu->tourelles;
+                if (tmp->position == t->position && tmp->ligne == t->ligne) {
+                    jeu->tourelles = t->next;
+                }
+                else {
+                    while (tmp->next->position != t->position && tmp->next->ligne != t->ligne) {
+                        tmp = tmp->next;
+                    }
+                    tmp->next = t->next;
+                }
+            }
+        }
+        e = e->next;
+    }
+}
+
+
+void avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
+    
 }

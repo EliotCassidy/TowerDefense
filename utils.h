@@ -73,5 +73,8 @@
     void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense);
     Etudiant* ligne_i_etudiant(int l, Plateau *plateau);
     void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p);
+    void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
+    void avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
+
 
 #endif
