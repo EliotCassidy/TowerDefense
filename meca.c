@@ -31,4 +31,51 @@ void placer_tourelles(Jeu *jeu, Defense* defense) {
 
 void avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
     Etudiant *e = jeu->etudiants;
+    while (e && e->tour <= jeu->tour) {
+        if (vide_devant()) {
+            e->position = 15;
+        }
+        else {
+            e->position = 16;
+        }
+        e = e->next;
+    }
+}
+
+degat(char type) {
+    switch (type) {
+        case 'T':
+            return 1;
+        case 'P':
+            return 3;
+        default:
+            return -1;
+    }
+}
+
+
+void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
+    Tourelle *t = jeu->tourelles;
+    while (t != NULL) {
+        if (degat(t->type) != -1) {
+            Etudiant *e = jeu->etudiants->next;
+            Etudiant *prev = jeu->etudiants;
+            
+            while (e && e->position <= 15) {
+                if (e->ligne == t->ligne) {
+                    e->pointsDeVie -= degat(t->type);
+                    if (e->pointsDeVie <= 0) {
+                        if (e == prev) {
+                            jeu->etudiants = e->next;
+                        }
+                        else {
+                            prev->next = e->next;
+                        }
+                    }
+                }
+                e = e->next;
+                prev = prev->next;
+            }
+        }
+    }
 }
