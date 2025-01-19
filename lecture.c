@@ -16,17 +16,9 @@ Etudiant* creer_etudiant(int type, int ligne, int tour) {
     e->position = -1;
     e->tour = tour;
     e->enCombat = 0;
-    e->enDeplacement = 0;
-    switch (type) {
-        case 'Z':
-            e->pointsDeVie = 3;
-            e->vitesse = 1;
-            break;
-        case 'Q':
-            e->pointsDeVie = 5;
-            e->vitesse = 1;
-            break;
-    }
+    e->enDeplacement = 1;
+    e->pointsDeVie = pdv(e->type);
+    e->vitesse = vitesse(e->type);
     e->next = NULL;
     e->next_line = NULL;
     e->prev_line = NULL;

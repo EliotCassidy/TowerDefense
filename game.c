@@ -29,29 +29,27 @@ int main(int argc, char* argv[]) {
     //         exit(EXIT_FAILURE);
     //         break;
     // }
-
+    printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VISUALISER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
     visualiser_vague(&jeu, &plateau);
-    printf("Vous avez %d 🪙\n", jeu.cagnotte);
-    placer_tourelles(&jeu, &defense, &plateau);
-    afficher_jeu(&jeu, &plateau, &defense);
     jeu.tour = 1;
-    while (jeu.tour < 10) {
-        printf("----------------- TOUR %d -----------------\n", jeu.tour);
+    int toucher = 0;
+    while (jeu.tour < 10 || toucher == 0) {
+        printf("\n\n\n\n----------------- TOUR %d -----------------\n", jeu.tour);
+        printf("Vous avez %d 🪙\n", jeu.cagnotte);
+        placer_tourelles(&jeu, &defense, &plateau);
         apparition(&jeu, &plateau, &defense, jeu.tour);
         tir_tourelles(&jeu, &plateau, &defense);
-        afficher_jeu(&jeu, &plateau, &defense);
         tir_ennemies(&jeu, &plateau, &defense);
-        avancer_ennemies(&jeu, &plateau, &defense);
-        // if (partie_perdu(&jeu)) {
-        //     procedure_perte(&jeu);
-        //     break;
-        // }
-        // placer_tourelles(&jeu);
-        // afficher_jeu(&jeu, &plateau);
-
-        // if (jeu.etudiants == NULL) {
-            
-        // }
+        toucher = avancer_ennemies(&jeu, &plateau, &defense);
+        if (toucher == 1) {
+            printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>DEFAITE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+            break;
+        }
+        if (jeu.etudiants == NULL) {
+            printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+            break;
+        }
+        afficher_jeu(&jeu, &plateau, &defense);
         jeu.tour++;
     }
     

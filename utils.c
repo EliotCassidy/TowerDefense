@@ -49,30 +49,49 @@ void scan_propre(char *output, char* message, int arg_count, ...) {
     }
 }
 
+int degat(char type) {
+    switch (type) {
+        case 'T': //gentil
+            return 1;
+        case 'P': //gentil
+            return 3;
+        case 'Z': //mechant
+            return 1;
+        default:
+            return -1;
+    }
+}
 
-
-int prix(char Type) {
-    switch (Type) {
+int prix(char type) {
+    switch (type) {
         case 'T':
             return 200;
-            break;
         case 'P':
             return 500;
-            break;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
     }
 }
 
-int pdv(char Type) {
-    switch (Type) {
+int pdv(char type) {
+    switch (type) {
         case 'T':
             return 1;
-            break;
         case 'P':
             return 2;
-            break;
+        case 'Z':
+            return 3;
+        default:
+            printf(">>>> Mauvais Type\n");
+            exit(1);
+    }
+}
+
+int vitesse(char type) {
+    switch (type) {
+        case 'Z':
+            return 1;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);

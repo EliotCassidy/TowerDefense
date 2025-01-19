@@ -74,7 +74,11 @@
     Etudiant* ligne_i_etudiant(int l, Plateau *plateau);
     void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p);
     void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
-    void avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
+    int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
 
+    int degat(char type);
+    int pdv(char type);
+    int prix(char type);
+    int vitesse(char type);
 
 #endif
