@@ -158,11 +158,12 @@ void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
         if (e->position > 15) {
             l = ligne_i_etudiant(e->ligne, plateau);
             if (vide_devant(e, l) && e->enDeplacement == 0) {
-                e->position = 15;
+                e->position = 16;
+                e->enDeplacement = 1;
             }
             else {
                 e->position = 16;
-                
+
             }
         }
         e = e->next;
@@ -179,32 +180,46 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
         if (degat(t->type) != -1) {
             Etudiant *e = jeu->etudiants;
             Etudiant *prev = jeu->etudiants;
-            if (e->ligne == t->ligne && t->position <= e->position && e->position <= 15) {
+            if (e->ligne == t->ligne && t->position <= e->position &&(e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) )) {
                 e->pointsDeVie -= degat(t->type);
                 if (e->pointsDeVie <= 0) {
+                    jeu->cagnotte += gain(e->type);
+                    if (e->next == NULL) {
+                        printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+                        exit(0);
+                    }
                     jeu->etudiants = e->next;
-                    e->next_line->prev_line = NULL;
-                    modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
-                }
-            }
-            e = e->next;
-            while (e != NULL) {
-                if (e->ligne == t->ligne && t->position <= e->position && e->position <= 15) {
-                    e->pointsDeVie -= degat(t->type);
-                    if (e->pointsDeVie <= 0) {
-                        prev->next = e->next;
+                    if (e->next_line != NULL) {
+                        e->next_line->prev_line = e->prev_line;
                         if (e->prev_line == NULL) {
                             modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
                         }
-                        else {
-                            e->prev_line->next_line = e->prev_line;
-                        }
-                        e->next_line->prev_line = e->prev_line;
                     }
-                    break;
                 }
+            }
+            else {
                 e = e->next;
-                prev = prev->next;
+                while (e != NULL) {
+                    if (e->ligne == t->ligne && t->position <= e->position && (e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) ) ) {
+                        e->pointsDeVie -= degat(t->type);
+                        if (e->pointsDeVie <= 0) {
+                            jeu->cagnotte += gain(e->type);
+                            prev->next = e->next;
+                            if (e->prev_line == NULL) {
+                                modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
+                            }
+                            else {
+                                e->prev_line->next_line = e->prev_line;
+                            }
+                            if (e->next_line != NULL) {
+                                e->next_line->prev_line = e->prev_line;
+                            }
+                        }
+                        break;
+                    }
+                    e = e->next;
+                    prev = prev->next;
+                }
             }
         }
         t = t->next;
@@ -268,57 +283,61 @@ int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
     Etudiant *e = jeu->etudiants;
     while(e != NULL) {
         if (e->enDeplacement == 1) {
-
-            Tourelle *t = ligne_i_tourelle(e->ligne, defense);
-            // . . . Z ou // . Z .... Z
-            if (t == NULL) {
-                if (e->prev_line == NULL) {
-                    e->position -= vitesse(e->type);
-                }
-                else {
-                    e->position = max(e->position - vitesse(e->type), e->prev_line->position + 1);
-                }
+            if (e->position == 16) {
+                e->position = 15;
             }
             else {
-                while (t->next_line != NULL && t->next_line->position <= e->position) {
-                    t = t->next_line;
-                }
-                // T . . . Z ou T . Z . Z ou Z . T . Z
-                if (t->position <= e->position) {
-                    // T ... Z
+                Tourelle *t = ligne_i_tourelle(e->ligne, defense);
+                // . . . Z ou // . Z .... Z
+                if (t == NULL) {
                     if (e->prev_line == NULL) {
-                        if (t->position >= e->position - vitesse(e->type)) {
-                            e->position = t->position;
-                            e->enCombat = 1;
-                            e->enDeplacement = 0;
-                        }
-                        else {
-                            e->position -= vitesse(e->type);
-                        }
+                        e->position -= vitesse(e->type);
                     }
                     else {
-                        // Z ... T ... Z
-                        if (e->prev_line->position < t->position) {
+                        e->position = max(e->position - vitesse(e->type), e->prev_line->position + 1);
+                    }
+                }
+                else {
+                    while (t->next_line != NULL && t->next_line->position <= e->position) {
+                        t = t->next_line;
+                    }
+                    // T . . . Z ou T . Z . Z ou Z . T . Z
+                    if (t->position <= e->position) {
+                        // T ... Z
+                        if (e->prev_line == NULL) {
                             if (t->position >= e->position - vitesse(e->type)) {
                                 e->position = t->position;
                                 e->enCombat = 1;
+                                e->enDeplacement = 0;
                             }
                             else {
                                 e->position -= vitesse(e->type);
                             }
                         }
-                        // T ... Z ... Z ou ... TZ ... Z ou qui vient de finir le combat
                         else {
-                            e->position = max(e->prev_line->position + 1, e->position - vitesse(e->type));
+                            // Z ... T ... Z
+                            if (e->prev_line->position < t->position) {
+                                if (t->position >= e->position - vitesse(e->type)) {
+                                    e->position = t->position;
+                                    e->enCombat = 1;
+                                }
+                                else {
+                                    e->position -= vitesse(e->type);
+                                }
+                            }
+                            // T ... Z ... Z ou ... TZ ... Z ou qui vient de finir le combat
+                            else {
+                                e->position = max(e->prev_line->position + 1, e->position - vitesse(e->type));
+                            }
+                        }
                         }
                     }
-                    }
-                }
 
+                }
+                if (e->position <= 0) {
+                    return 1;
             }
-            if (e->position <= 0) {
-                return 1;
-            }
+        }
         e = e->next;
     }
     return 0;

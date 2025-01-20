@@ -80,5 +80,6 @@
     int pdv(char type);
     int prix(char type);
     int vitesse(char type);
+    int gain(char type);
 
 #endif

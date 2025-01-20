@@ -247,6 +247,7 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
             }
             else if (e && e->position == pos) {
                 printf(" %2d%c ", e->pointsDeVie, e->type);
+                e = e->next_line;
             }
             else {
                 printf("  .  ");

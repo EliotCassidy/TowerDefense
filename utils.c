@@ -88,6 +88,16 @@ int pdv(char type) {
     }
 }
 
+int gain(char type) {
+    switch (type) {
+        case 'Z':
+            return 150;
+        default:
+            printf(">>>> Mauvais Type\n");
+            exit(1);
+    }
+}
+
 int vitesse(char type) {
     switch (type) {
         case 'Z':
