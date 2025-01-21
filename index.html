@@ -90,6 +90,45 @@
             align-items: center;
             gap: 10px;
         }
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+        .modal h2 {
+            margin: 0 0 10px;
+        }
+        .modal button {
+            margin-top: 10px;
+            background-color: #e74c3c;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal button:hover {
+            background-color: #c0392b;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -100,9 +139,9 @@
     <div class="grid" id="grid"></div>
 
     <div class="color-selector">
-        <button id="violet" style="background-color: violet;" onclick="setCurrentColor('V')">V</button>
-        <button id="red" style="background-color: red;" onclick="setCurrentColor('R')">R</button>
-        <button id="blue" style="background-color: blue;" onclick="setCurrentColor('B')">B</button>
+        <button id="violet" style="background-color: violet;" ondblclick="showEnemyInfo('V')" onclick="setCurrentColor('V')">V</button>
+        <button id="red" style="background-color: red;" ondblclick="showEnemyInfo('R')" onclick="setCurrentColor('R')">R</button>
+        <button id="blue" style="background-color: blue;" ondblclick="showEnemyInfo('B')" onclick="setCurrentColor('B')">B</button>
         <button id="white" style="background-color: white; border: 1px solid #7f8c8d;" onclick="setCurrentColor('')">E</button>
     </div>
 
@@ -116,13 +155,24 @@
         </div>
     </div>
 
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div class="modal" id="modal">
+        <h2>Enemy Characteristics</h2>
+        <p id="enemyDetails"></p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+
     <script>
         const grid = document.getElementById('grid');
         const slider = document.getElementById('slider');
         const sliderValue = document.getElementById('sliderValue');
         const randomPercentage = document.getElementById('randomPercentage');
         const percentageValue = document.getElementById('percentageValue');
+        const overlay = document.getElementById('overlay');
+        const modal = document.getElementById('modal');
+        const enemyDetails = document.getElementById('enemyDetails');
         let currentColor = '';
+        let isMouseDown = false;
         const gridData = Array.from({ length: 7 }, () => Array(15).fill(''));
 
         function updateSliderValue() {
@@ -144,13 +194,30 @@
                     cell.classList.add('cell');
                     cell.dataset.row = row;
                     cell.dataset.col = col;
-                    cell.addEventListener('click', () => {
-                        gridData[row][col] = currentColor;
-                        cell.style.backgroundColor = getColorFromLetter(currentColor);
+
+                    cell.addEventListener('mousedown', () => {
+                        isMouseDown = true;
+                        applyColor(cell, row, col);
                     });
+
+                    cell.addEventListener('mouseover', () => {
+                        if (isMouseDown) {
+                            applyColor(cell, row, col);
+                        }
+                    });
+
                     grid.appendChild(cell);
                 }
             }
+
+            document.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+        }
+
+        function applyColor(cell, row, col) {
+            gridData[row][col] = currentColor;
+            cell.style.backgroundColor = getColorFromLetter(currentColor);
         }
 
         function getColorFromLetter(letter) {
@@ -212,6 +279,41 @@
                 const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
                 cell.style.backgroundColor = getColorFromLetter(randomColor);
             }
+        }
+
+        function showEnemyInfo(color) {
+            const enemyInfo = {
+                'V': {
+                    health: 100,
+                    speed: 2,
+                    cost: 5,
+                    damage: 10
+                },
+                'R': {
+                    health: 150,
+                    speed: 1.5,
+                    cost: 10,
+                    damage: 20
+                },
+                'B': {
+                    health: 80,
+                    speed: 3,
+                    cost: 3,
+                    damage: 5
+                }
+            };
+
+            const info = enemyInfo[color];
+            if (info) {
+                enemyDetails.innerHTML = `Health: ${info.health}<br>Speed: ${info.speed}<br>Cost if Dead: ${info.cost}<br>Damage: ${info.damage}`;
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
         }
 
         createGrid();
