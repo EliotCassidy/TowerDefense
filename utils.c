@@ -57,6 +57,10 @@ int degat(char type) {
             return 3;
         case 'Z': //mechant
             return 1;
+        case 'M':
+            return 2;
+        case 'R':
+            return 1;
         default:
             return -1;
     }
@@ -82,6 +86,10 @@ int pdv(char type) {
             return 2;
         case 'Z':
             return 3;
+        case 'M':
+            return 3;
+        case 'R':
+            return 5;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
@@ -90,6 +98,10 @@ int pdv(char type) {
 
 int gain(char type) {
     switch (type) {
+        case 'R':
+            return 300;
+        case 'M':
+            return 300;
         case 'Z':
             return 150;
         default:
@@ -100,6 +112,10 @@ int gain(char type) {
 
 int vitesse(char type) {
     switch (type) {
+        case 'M':
+            return 2;
+        case 'R':
+            return 1;
         case 'Z':
             return 1;
         default:

@@ -172,8 +172,11 @@
         const modal = document.getElementById('modal');
         const enemyDetails = document.getElementById('enemyDetails');
         let currentColor = '';
-        let isMouseDown = false;
         const gridData = Array.from({ length: 7 }, () => Array(15).fill(''));
+        let isMouseDown = false;
+
+        document.body.addEventListener('mousedown', () => isMouseDown = true);
+        document.body.addEventListener('mouseup', () => isMouseDown = false);
 
         function updateSliderValue() {
             sliderValue.textContent = slider.value;
@@ -194,28 +197,18 @@
                     cell.classList.add('cell');
                     cell.dataset.row = row;
                     cell.dataset.col = col;
-
                     cell.addEventListener('mousedown', () => {
-                        isMouseDown = true;
-                        applyColor(cell, row, col);
+                        updateCellColor(row, col, cell);
                     });
-
                     cell.addEventListener('mouseover', () => {
-                        if (isMouseDown) {
-                            applyColor(cell, row, col);
-                        }
+                        if (isMouseDown) updateCellColor(row, col, cell);
                     });
-
                     grid.appendChild(cell);
                 }
             }
-
-            document.addEventListener('mouseup', () => {
-                isMouseDown = false;
-            });
         }
 
-        function applyColor(cell, row, col) {
+        function updateCellColor(row, col, cell) {
             gridData[row][col] = currentColor;
             cell.style.backgroundColor = getColorFromLetter(currentColor);
         }
@@ -247,7 +240,7 @@
             gridData.forEach((row, rowIndex) => {
                 row.forEach((cell, colIndex) => {
                     if (cell) {
-                        content += `${cell} ${rowIndex + 1} ${colIndex + 1}\n`;
+                        content += `${colIndex + 1} ${rowIndex + 1} ${cell}\n`;
                     }
                 });
             });

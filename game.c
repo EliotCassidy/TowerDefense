@@ -54,4 +54,5 @@ int main(int argc, char* argv[]) {
     }
     
     libere_jeu(&jeu);
+    return EXIT_SUCCESS;
 }

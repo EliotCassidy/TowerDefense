@@ -281,7 +281,7 @@ int max(int x, int y) {
 // Selon le chainage next et pas par ligne :(
 int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
     Etudiant *e = jeu->etudiants;
-    while(e != NULL) {
+    while (e != NULL) {
         if (e->enDeplacement == 1) {
             if (e->position == 16) {
                 e->position = 15;
@@ -331,7 +331,15 @@ int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
                             }
                         }
                         }
+                    else {
+                        if (e->prev_line == NULL) {
+                            e->position -= vitesse(e->type);
+                        }
+                        else {
+                            e->position = max(e->position - vitesse(e->type), e->prev_line->position + 1);
+                        }                            
                     }
+                }
 
                 }
                 if (e->position <= 0) {
