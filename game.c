@@ -17,7 +17,6 @@ int main(int argc, char* argv[]) {
     lire_fichier(argv[1], &jeu, &plateau);
 
 
-
     // int choix = afficher_menu();
     // Gérer cas = 2
     // switch (choix) {

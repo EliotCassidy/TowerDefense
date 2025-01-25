@@ -180,7 +180,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
         if (degat(t->type) != -1) {
             Etudiant *e = jeu->etudiants;
             Etudiant *prev = jeu->etudiants;
-            if (e->ligne == t->ligne && t->position <= e->position &&(e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) )) {
+            if (e->ligne == t->ligne && t->position <= e->position && (e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) )) {
                 e->pointsDeVie -= degat(t->type);
                 if (e->pointsDeVie <= 0) {
                     jeu->cagnotte += gain(e->type);
@@ -194,6 +194,9 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                         if (e->prev_line == NULL) {
                             modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
                         }
+                    }
+                    else {
+                        modifier_ligne_i_etudiant(e->ligne, NULL, plateau);
                     }
                 }
             }
@@ -341,9 +344,9 @@ int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
                     }
                 }
 
-                }
-                if (e->position <= 0) {
-                    return 1;
+            }
+            if (e->position <= 0) {
+                return 1;
             }
         }
         e = e->next;

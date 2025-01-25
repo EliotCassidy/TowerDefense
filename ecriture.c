@@ -156,32 +156,11 @@ int visualiser_vague(Jeu *jeu, Plateau *plateau) {
     for (int ligne = 1; ligne <= 7; ligne++) {
         printf("%d|   ", ligne);
         Etudiant *e_ligne = jeu->etudiants;
-        while (e_ligne->ligne != ligne && e_ligne->next != NULL) {
+        while (e_ligne != NULL && e_ligne->ligne != ligne) {
             e_ligne = e_ligne->next;
         }
-        switch (ligne) {
-            case 1:
-                plateau->ligne1 = e_ligne;
-                break;
-            case 2:
-                plateau->ligne2 = e_ligne;
-                break;
-            case 3:
-                plateau->ligne3 = e_ligne;
-                break;
-            case 4:
-                plateau->ligne4 = e_ligne;
-                break;
-            case 5:
-                plateau->ligne5 = e_ligne;
-                break;
-            case 6:
-                plateau->ligne6 = e_ligne;
-                break;
-            case 7:
-                plateau->ligne7 = e_ligne;
-                break;
-        }
+        modifier_ligne_i_etudiant(ligne, e_ligne, plateau);
+
         for (int el = 1; el <= pos; el++) {
             if (e_ligne != NULL && e_ligne->tour == el && e_ligne->ligne == ligne) {
                 printf(" %2d%c ", e_ligne->pointsDeVie, e_ligne->type);
