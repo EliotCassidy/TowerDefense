@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
     visualiser_vague(&jeu, &plateau);
     jeu.tour = 1;
     int toucher = 0;
+    Etudiant *e = jeu.etudiants;
     while (jeu.tour < 10 || toucher == 0) {
         printf("\n\n\n\n----------------- TOUR %d -----------------\n", jeu.tour);
         printf("Vous avez %d 🪙\n", jeu.cagnotte);

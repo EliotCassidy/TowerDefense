@@ -49,27 +49,27 @@ void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant, Plateau *p) {
 
     // Maintenir les relations `next_line` et `prev_line` pour les étudiants de la même ligne
     Etudiant* ligne_temp = jeu->etudiants;
-    Etudiant* ligne_prev = NULL;
 
     while (ligne_temp) {
         if (ligne_temp->ligne == etudiant->ligne) {
-            if (ligne_temp->position < etudiant->position) {
-                ligne_prev = ligne_temp;
-            } else if (ligne_temp->position > etudiant->position) {
+            if (ligne_temp->position < etudiant->position && (etudiant->prev_line == NULL || etudiant->prev_line->position < ligne_temp->position) ) {
+                etudiant->prev_line = ligne_temp;
+            }
+            else if (ligne_temp->position > etudiant->position && (etudiant->next_line == NULL || etudiant->next_line->position > ligne_temp->position)) {
                 etudiant->next_line = ligne_temp;
-                ligne_temp->prev_line = etudiant;
-                break;
             }
         }
         ligne_temp = ligne_temp->next;
     }
 
-    if (ligne_prev) {
-        ligne_prev->next_line = etudiant;
-        etudiant->prev_line = ligne_prev;
-    }
     if (etudiant->prev_line == NULL) {
         modifier_ligne_i_etudiant(etudiant->ligne, etudiant, p);
+    }
+    else {
+        etudiant->prev_line->next_line = etudiant;
+    }
+    if (etudiant->next_line != NULL) {
+        etudiant->next_line->prev_line = etudiant;
     }
 }
 
