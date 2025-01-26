@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "utils.h"
 
 Etudiant* ligne_i_etudiant(int l, Plateau *plateau) {
@@ -103,8 +104,8 @@ void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p) {
 void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
     char placement_tourelle[6];
     do {
-        printf("Voulez-vous arrêter (o) ? \nSi non, où voulez vous la placer [Type tourelle (T/P/...)][Ligne tourelle (1/.../7)][Position tourelle (1/.../15)] ?\n");
         do {
+            printf("Voulez-vous arrêter (o) ? \nSi non, où voulez vous la placer [Type tourelle (T/P/...)][Ligne tourelle (1/.../7)][Position tourelle (1/.../15)] ?\n");
             fgets(placement_tourelle, sizeof(placement_tourelle), stdin);
             placement_tourelle[strcspn(placement_tourelle, "\n")] = '\0';
         }
@@ -117,6 +118,7 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
         else {
             Tourelle *t = malloc(sizeof(Tourelle));
             if (creer_tourelle(jeu, t, placement_tourelle) == 0) {
+                nb_tourelles += 1;
                 ajout(jeu, t, defense);
                 Etudiant *ligne = ligne_i_etudiant(t->ligne, plateau);
                 while (ligne && ligne->position < t->position) {
@@ -132,11 +134,11 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
 
                 }
                 jeu->cagnotte -= t->prix;
-                printf("Il vous reste %ld 🪙\n", jeu->cagnotte);
             }
         }
         afficher_jeu(jeu, plateau, defense);
         printf("\n");
+        printf("Il vous reste %ld 🪙\n", jeu->cagnotte);
     }
     while (placement_tourelle[0] != 'o');
 }
@@ -186,6 +188,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                 e->pointsDeVie -= degat(t->type);
 
                 if (e->pointsDeVie <= 0) {
+                    jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
                     jeu->cagnotte += gain(e->type);
                     if (e->next == NULL) {
                         printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
@@ -217,6 +220,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                     if (e->ligne == t->ligne && t->position <= e->position && (e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) ) ) {
                         e->pointsDeVie -= degat(t->type);
                         if (e->pointsDeVie <= 0) {
+                            jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
                             jeu->cagnotte += gain(e->type);
                             prev->next = e->next;
                             if (e->prev_line == NULL) {
@@ -252,6 +256,7 @@ void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
             t->pointsDeVie -= degat(e->type);
 
             if (t->pointsDeVie <= 0) {
+                nb_tourelles -= 1;
                 e->enCombat = 0;
                 e->enDeplacement = 1;
                 while (e->next_line != NULL && e->next_line->enDeplacement == 0 && e->next_line->position <= 15 && e->next_line->enCombat == 0) {

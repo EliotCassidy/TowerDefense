@@ -56,7 +56,7 @@
         Tourelle* ligne7;
     } Defense;
 
-    extern int nb_etudiants;
+    extern int nb_tourelles;
 
 
 

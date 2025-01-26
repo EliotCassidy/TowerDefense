@@ -3,7 +3,7 @@
 #include <string.h>
 #include "utils.h"
 
-int nb_etudiants = 0;
+int nb_tourelles = 0;
 
 Etudiant* creer_etudiant(int type, int ligne, int tour) {
     Etudiant* e = malloc(sizeof(Etudiant));
@@ -28,7 +28,6 @@ Etudiant* creer_etudiant(int type, int ligne, int tour) {
 void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant, Plateau *p) {
     Etudiant* temp = jeu->etudiants;
     Etudiant* prev = NULL;
-    nb_etudiants += 1;
     while (temp && temp->tour <= etudiant->tour) {
         // Gérer les conflits de position sur la même ligne
         if (temp->ligne == etudiant->ligne && temp->tour == etudiant->tour) {
