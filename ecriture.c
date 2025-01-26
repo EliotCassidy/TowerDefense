@@ -1,145 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <termios.h>
-#include <fcntl.h>
 #include "utils.h"
 
-// // Fonction pour désactiver l'entrée bufferisée
-// void desactiverEntreeBufferisee() {
-//     struct termios t;
-//     tcgetattr(STDIN_FILENO, &t);
-//     t.c_lflag &= ~ICANON; // Désactiver le mode canonique
-//     t.c_lflag &= ~ECHO;   // Désactiver l'écho
-//     tcsetattr(STDIN_FILENO, TCSANOW, &t);
 
-//     // Rendre stdin non-bloquant
-//     fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) | O_NONBLOCK);
-// }
+// Afficher le titre en ASCII art
+void afficherTitre() {
 
-// // Fonction pour réactiver l'entrée bufferisée
-// void activerEntreeBufferisee() {
-//     struct termios t;
-//     tcgetattr(STDIN_FILENO, &t);
-//     t.c_lflag |= ICANON; // Activer le mode canonique
-//     t.c_lflag |= ECHO;   // Activer l'écho
-//     tcsetattr(STDIN_FILENO, TCSANOW, &t);
+printf("                                         .----------------.  .----------------.  .----------------.                                         \n");
+printf("                                        | .--------------. || .--------------. || .--------------. |                                        \n");
+printf("                                        | |  ________    | || |      __      | || | _____  _____ | |                                        \n");
+printf("                                        | | |_   ___ `.  | || |     /  \\     | || ||_   _||_   _|| |                                        \n");
+printf("                                        | |   | |   `. \\ | || |    / /\\ \\    | || |  | |    | |  | |                                        \n");
+printf("                                        | |   | |    | | | || |   / ____ \\   | || |  | '    ' |  | |                                        \n");
+printf("                                        | |  _| |___.' / | || | _/ /    \\ \\_ | || |   \\ `--' /   | |                                        \n");
+printf("                                        | | |________.'  | || ||____|  |____|| || |    `.__.'    | |                                        \n");
+printf("                                        | |              | || |              | || |              | |                                        \n");
+printf("                                        | '--------------' || '--------------' || '--------------' |                                        \n");
+printf("                                         '----------------'  '----------------'  '----------------'                                         \n");
+printf(" .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------. \n");
+printf("| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |\n");
+printf("| |     _____    | || | ____  _____  | || | ____   ____  | || |      __      | || |  ________    | || |  _________   | || |  _______     | |\n");
+printf("| |    |_   _|   | || ||_   \\|_   _| | || ||_  _| |_  _| | || |     /  \\     | || | |_   ___ `.  | || | |_   ___  |  | || | |_   __ \\    | |\n");
+printf("| |      | |     | || |  |   \\ | |   | || |  \\ \\   / /   | || |    / /\\ \\    | || |   | |   `. \\ | || |   | |_  \\_|  | || |   | |__) |   | |\n");
+printf("| |      | |     | || |  | |\\ \\| |   | || |   \\ \\ / /    | || |   / ____ \\   | || |   | |    | | | || |   |  _|  _   | || |   |  __ /    | |\n");
+printf("| |     _| |_    | || | _| |_\\   |_  | || |    \\ ' /     | || | _/ /    \\ \\_ | || |  _| |___.' / | || |  _| |___/ |  | || |  _| |  \\ \\_  | |\n");
+printf("| |    |_____|   | || ||_____|\\____| | || |     \\_/      | || ||____|  |____|| || | |________.'  | || | |_________|  | || | |____| |___| | |\n");
+printf("| |              | || |              | || |              | || |              | || |              | || |              | || |              | |\n");
+printf("| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |\n");
+printf(" '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' \n");
 
-//     // Restaurer stdin en mode bloquant
-//     fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) & ~O_NONBLOCK);
-// }
-
-// // Effacer l'écran
-// void effacerEcran() {
-//     printf("\033[H\033[J");
-// }
-
-// // Afficher le titre en ASCII art
-// void afficherTitre() {
-
-// printf("                                         .----------------.  .----------------.  .----------------.                                         \n");
-// printf("                                        | .--------------. || .--------------. || .--------------. |                                        \n");
-// printf("                                        | |  ________    | || |      __      | || | _____  _____ | |                                        \n");
-// printf("                                        | | |_   ___ `.  | || |     /  \\     | || ||_   _||_   _|| |                                        \n");
-// printf("                                        | |   | |   `. \\ | || |    / /\\ \\    | || |  | |    | |  | |                                        \n");
-// printf("                                        | |   | |    | | | || |   / ____ \\   | || |  | '    ' |  | |                                        \n");
-// printf("                                        | |  _| |___.' / | || | _/ /    \\ \\_ | || |   \\ `--' /   | |                                        \n");
-// printf("                                        | | |________.'  | || ||____|  |____|| || |    `.__.'    | |                                        \n");
-// printf("                                        | |              | || |              | || |              | |                                        \n");
-// printf("                                        | '--------------' || '--------------' || '--------------' |                                        \n");
-// printf("                                         '----------------'  '----------------'  '----------------'                                         \n");
-// printf(" .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------. \n");
-// printf("| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |\n");
-// printf("| |     _____    | || | ____  _____  | || | ____   ____  | || |      __      | || |  ________    | || |  _________   | || |  _______     | |\n");
-// printf("| |    |_   _|   | || ||_   \\|_   _| | || ||_  _| |_  _| | || |     /  \\     | || | |_   ___ `.  | || | |_   ___  |  | || | |_   __ \\    | |\n");
-// printf("| |      | |     | || |  |   \\ | |   | || |  \\ \\   / /   | || |    / /\\ \\    | || |   | |   `. \\ | || |   | |_  \\_|  | || |   | |__) |   | |\n");
-// printf("| |      | |     | || |  | |\\ \\| |   | || |   \\ \\ / /    | || |   / ____ \\   | || |   | |    | | | || |   |  _|  _   | || |   |  __ /    | |\n");
-// printf("| |     _| |_    | || | _| |_\\   |_  | || |    \\ ' /     | || | _/ /    \\ \\_ | || |  _| |___.' / | || |  _| |___/ |  | || |  _| |  \\ \\_  | |\n");
-// printf("| |    |_____|   | || ||_____|\\____| | || |     \\_/      | || ||____|  |____|| || | |________.'  | || | |_________|  | || | |____| |___| | |\n");
-// printf("| |              | || |              | || |              | || |              | || |              | || |              | || |              | |\n");
-// printf("| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |\n");
-// printf(" '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' \n");
-
-// }
-
-// // Afficher les instructions interactives
-// void afficherInstructions() {
-//     printf("\033[30;2HAppuie sur Entrée pour jouer"); // En bas à gauche
-//     printf("\033[30;100HAppuie sur 's' pour charger un fichier"); // En bas à droite
-// }
-
-// // Afficher le dauphin à une position donnée
-// void afficherDauphin(int x) {
-//     for (int i = 0; i < x; i++) {
-//         printf(" ");
-//     }
-//     printf("     / \\    \n");
-//     for (int i = 0; i < x; i++) {
-//         printf(" ");
-//     }
-//     printf("     \\ /    \n");
-//     for (int i = 0; i < x; i++) {
-//         printf(" ");
-//     }
-//     printf("   \\  |  / \n");
-//     for (int i = 0; i < x; i++) {
-//         printf(" ");
-//     }
-//     printf("    \\_|_/  \n");
-//     for (int i = 0; i < x; i++) {
-//         printf(" ");
-//     }
-//     printf("     / \\   \n");
-//     for (int i = 0; i < x; i++) {
-//         printf(" ");
-//     }
-//     printf("    /   \\  \n");
-// }
-
-// int afficher_menu() {
-//     desactiverEntreeBufferisee();
-//     int position = 0;
-//     int direction = 1; // 1 pour droite, -1 pour gauche
-
-//     while (1) {
-//         effacerEcran();
-//         afficherTitre(); // Appel à la fonction générique pour afficher le titre
-//         afficherDauphin(position);
-//         afficherInstructions();
-
-//         // Mettre à jour la position
-//         if (direction == 1 && position < 130) {
-//             position++;
-//         } else if (direction == -1 && position > 0) {
-//             position--;
-//         } else {
-//             direction *= -1; // Inverser la direction
-//         }
-
-//         // Vérifier les touches pressées
-//         char c = getchar();
-//         if (c == '\n') {
-//             printf("\nDémarrage du jeu...\n");
-//             effacerEcran();
-//             return 1;
-//         } else if (c == 's') {
-//             printf("\nChargement du fichier...\n");
-//             effacerEcran();
-//             return 2;
-//         }
-
-//         usleep(20000); // Attendre 0.2 secondes
-//     }
-
-//     activerEntreeBufferisee();
-// }
-
-
-void clear() {
-    for (int i = 0; i < 1; i++) {
-        printf("\n");
-    }
 }
+
+// Afficher les instructions interactives
+void afficherInstructions() {
+    printf("1 : Partie dans niveau.txt\n"); // En bas à gauche
+    printf("2 : Partie infinie\n");
+    printf("3 : Charger un fichier de sauvegarde\n"); // En bas à droite
+}
+
+void effacerEcran() {
+    printf("\n\n\n\n\n\n\n\n\n\n");
+}
+
+int afficher_menu() {
+    effacerEcran();
+    afficherTitre();
+    afficherInstructions();
+
+    char c[3];
+    fgets(c, sizeof(c), stdin);
+    if (c[0] == '1') {
+        printf("\nDémarrage du jeu...\n");
+        effacerEcran();
+        return 1;
+    }
+    else if (c[0] == '2') {
+        printf("\nDémarrage du jeu...\n");
+        effacerEcran();
+        return 2;
+    } 
+    else if (c[0] == '3') {
+        printf("\nChargement du fichier...\n");
+        effacerEcran();
+        return 3;
+    }
+    else {
+        return -1;
+    }
+
+}
+
+
 
 
 int visualiser_vague(Jeu *jeu, Plateau *plateau) {
@@ -147,7 +78,7 @@ int visualiser_vague(Jeu *jeu, Plateau *plateau) {
     Etudiant *maxi = jeu->etudiants;
     if (maxi == NULL) {
         printf("Pas de vague\n");
-        return 1;
+        return 0;
     }
     while (maxi->next) {
         maxi = maxi->next;
@@ -174,11 +105,11 @@ int visualiser_vague(Jeu *jeu, Plateau *plateau) {
             }
         }
     }
-    return 0;
+    return 1;
 }
 
 void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
-    clear();
+    effacerEcran();
     for (int ligne = 1; ligne <= 7; ligne++) {
         printf("%d|   ", ligne);
         Etudiant *e = malloc(sizeof(Etudiant));

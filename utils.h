@@ -7,6 +7,7 @@
         int ligne;
         int position;
         int prix;
+        int niveau;
         struct tourelle* next;
         struct tourelle* next_line;
     } Tourelle;
@@ -28,8 +29,11 @@
     typedef struct {
         Tourelle* tourelles;
         Etudiant* etudiants;
-        int cagnotte;
+        long cagnotte;
         int tour;
+        long score;
+        int niveau;
+        int mode;
     } Jeu;
 
     typedef struct {
@@ -62,7 +66,7 @@
     int visualiser_vague(Jeu *jeu, Plateau *plateau);
 
     int prix(char);
-    void scan_propre(char *output, char* message, int arg_count, ...);
+    int scan_propre(char *output);
 
     int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos);
     void ajout(Jeu *jeu, Tourelle *t, Defense *d);

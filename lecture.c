@@ -83,7 +83,7 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau) {
     }
 
     // Lecture de la cagnotte
-    if (fscanf(fichier, "%d", &jeu->cagnotte) != 1) {
+    if (fscanf(fichier, "%ld", &jeu->cagnotte) != 1) {
         fprintf(stderr, "Erreur de lecture de la cagnotte\n");
         fclose(fichier);
         exit(EXIT_FAILURE);

@@ -4,38 +4,34 @@
 #include "utils.h"
 
 // Fonction principale
-int main(int argc, char* argv[]) {
-
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <fichier_d_entree>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
+int main(void) {
 
     Plateau plateau = {.ligne1 = NULL, .ligne2 = NULL, .ligne3 = NULL, .ligne4 = NULL, .ligne5 = NULL, .ligne6 = NULL, .ligne7 = NULL};
     Defense defense = {.ligne1 = NULL, .ligne2 = NULL, .ligne3 = NULL, .ligne4 = NULL, .ligne5 = NULL, .ligne6 = NULL, .ligne7 = NULL};
-    Jeu jeu = { .tourelles = NULL, .etudiants = NULL, .cagnotte = 0, .tour = 0 };
-    lire_fichier(argv[1], &jeu, &plateau);
+    Jeu jeu = { .tourelles = NULL, .etudiants = NULL, .cagnotte = 0, .tour = 0 , .score = 0, .niveau = 0, .mode = 0};
 
 
-    // int choix = afficher_menu();
-    // Gérer cas = 2
-    // switch (choix) {
-    //     case 1:
 
-    //     case 2:
 
-    //     default:
-    //         exit(EXIT_FAILURE);
-    //         break;
-    // }
+    int choix = afficher_menu();
+    jeu.mode = choix;
+    if (jeu.mode == -1) {
+        printf("Mauvais mode de jeu\n");
+        return 1;
+    }
+    else if (jeu.mode == 1) {
+        lire_fichier("niveau.txt", &jeu, &plateau);
+    }
+
+
     printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VISUALISER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
     int enCours = visualiser_vague(&jeu, &plateau);
     jeu.tour = 1;
     int toucher = 0;
-    Etudiant *e = jeu.etudiants;
-    while (jeu.tour < 10 || toucher == 0) {
-        printf("\n\n\n\n----------------- TOUR %d -----------------\n", jeu.tour);
-        printf("Vous avez %d 🪙\n", jeu.cagnotte);
+    while (enCours) {
+        printf("\n------------------------------------ TOUR %d ------------------------------------\n", jeu.tour);
+        printf("%ld 🪙", jeu.cagnotte);
+        printf("\t\t\t\t\t\t\t\t\t Score : %ld\n\n", jeu.score);
         placer_tourelles(&jeu, &defense, &plateau);
         apparition(&jeu, &plateau, &defense, jeu.tour);
         tir_tourelles(&jeu, &plateau, &defense);
