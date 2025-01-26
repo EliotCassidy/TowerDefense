@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     //         break;
     // }
     printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VISUALISER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-    visualiser_vague(&jeu, &plateau);
+    int enCours = visualiser_vague(&jeu, &plateau);
     jeu.tour = 1;
     int toucher = 0;
     Etudiant *e = jeu.etudiants;

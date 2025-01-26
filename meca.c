@@ -140,11 +140,9 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
 
 
 int vide_devant(Etudiant *e, Etudiant *ligne) {
-    printf(">>>>>>> TIC\n");
     int cpt = 0;
     while (ligne != NULL && ligne->position <= 14 && cpt < 10) {
         ligne = ligne->next_line;
-        printf(">>>>>> %d %d\n", ligne->position, ligne->enDeplacement);
         cpt++;
     }
     if (ligne != NULL && (ligne->position != 15) || ( (ligne->position == 15) && (ligne->enDeplacement == 1) ) ) {
