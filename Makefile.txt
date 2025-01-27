@@ -1,23 +1,22 @@
-# Options de compilation
-CFLAGS = -Wall
+# Variables
+compil = gcc
+CFLAGS = -Wall -g
+fichier_objet = game.o ecriture.o lecture.o utils.o meca.o
+cible = game
 
-# Règle principale
-all: projet_c
 
-# Création de l'exécutable
-projet_c: game.o lecture.o ecriture.o Makefile
-	gcc -o projet_c game.o lecture.o ecriture.o
+all: $(cible)
 
-# Compilation des fichiers objets
-game.o: game.c utils.h
-	gcc -o game.o -c game.c $(CFLAGS)
+$(cible): $(fichier_objet)
+	$(CC) $(CFLAGS) -o $@ $^
 
-lecture.o: lecture.c utils.h
-	gcc -o lecture.o -c lecture.c $(CFLAGS)
-
-ecriture.o: ecriture.c utils.h
-	gcc -o ecriture.o -c ecriture.c $(CFLAGS)
+# Règle pour générer les fichiers .o à partir des fichiers .c
+%.o: %.c
+	$(compil) $(CFLAGS) -c $<
 
 # Nettoyage des fichiers générés
 clean:
-	rm -rf *.o projet_c
+	rm -f $(fichier_objet) $(cible)
+
+# Pour s'assurer que clean est toujours exécutée
+.PHONY: all clean
