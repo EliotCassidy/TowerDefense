@@ -210,7 +210,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                             modifier_ligne_i_etudiant(e->ligne, NULL, plateau);
                         }
                         else {
-                            e->prev_line->next_line = e->next_line;
+                            e->prev_line->next_line = NULL;
                         }
                     }
                     // free(e);
@@ -308,6 +308,15 @@ int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
         if (e->enDeplacement == 1) {
             if (e->position == 16) {
                 e->position = 15;
+                Tourelle *t = ligne_i_tourelle(e->ligne, defense);
+                if (t != NULL) {
+                    while (t->next_line != NULL && t->next_line->position <= e->position) {
+                        t = t->next_line;
+                    }
+                    if (t->position == 15) {
+                        e->enCombat = 1;
+                    }
+                }
             }
             else {
                 Tourelle *t = ligne_i_tourelle(e->ligne, defense);
