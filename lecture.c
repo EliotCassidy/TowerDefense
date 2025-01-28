@@ -93,14 +93,13 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau) {
 
     // Lecture des vilains ennemis
     while (fscanf(fichier, "%d %d %s", &tour, &ligne, type) == 3) {
-
         Etudiant* e = creer_etudiant(type[0], ligne, tour);
         ajouter_etudiant(jeu, e, plateau);
     }
     fclose(fichier);
 }
 
-void libere_jeu(Jeu *jeu) {
+void libere_jeu(Jeu *jeu, char* action[]) {
     Etudiant *temp = jeu->etudiants;
     while (temp) {
         Etudiant* suivant = temp->next;
@@ -112,5 +111,8 @@ void libere_jeu(Jeu *jeu) {
         Tourelle* suivant = tmp->next;
         free(tmp);
         tmp = suivant;
+    }
+    for (int i = 0; i < nb_actions; i++) {
+        free(action[i]);
     }
 }

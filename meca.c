@@ -4,6 +4,9 @@
 #include <math.h>
 #include "utils.h"
 
+int nb_actions = 0;
+
+
 Etudiant* ligne_i_etudiant(int l, Plateau *plateau) {
     switch (l) {
         case 1:
@@ -101,59 +104,72 @@ void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p) {
 }
 
 
-void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
+void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *actions[], char* nom_fichier, char **instruction, int *n) {
     char placement_tourelle[10] = {0};
     do {
-        do {
-            printf("Placez des tourelles (Tapez 'h' ou 'help' pour les descriptions et tapez 'q' ou 'quit' pour passez au tour suivant)\n");
-            fgets(placement_tourelle, sizeof(placement_tourelle), stdin);
-            placement_tourelle[strcspn(placement_tourelle, "\n")] = '\0';
+        if (instruction[*n] != NULL && (strcmp(instruction[*n], "END") == 0 || strcmp(instruction[*n], "END\n") == 0)) {
+            do {
+                printf("Placez des tourelles (Tapez 'h' ou 'help' pour les descriptions et tapez 'q' ou 'quit' pour passez au tour suivant)\n");
+                fgets(placement_tourelle, sizeof(placement_tourelle), stdin);
+                placement_tourelle[strcspn(placement_tourelle, "\n")] = '\0';
+            }
+            while (scan_propre(placement_tourelle) == 0);
         }
-        while (scan_propre(placement_tourelle) == 0);
+        else {
+            instruction[*n][strlen(instruction[*n]) - 1] = '\0';
+            strcpy(placement_tourelle, instruction[*n]);
+            *n += 1;
+        }
+        
+        if (strcmp(placement_tourelle, "") == 0 || strcmp(placement_tourelle, "\n") == 0 || strcmp(placement_tourelle, "#####") == 0) {
+            continue;
+        }
 
         if (strcmp(placement_tourelle, "s") == 0 || strcmp(placement_tourelle, "save") == 0) {
-            char nomfichier[100];
-            
-            do {
-                printf("Entrez le nom de la sauvegarde : ");
-            } while (fgets(nomfichier, 100, stdin) == NULL);
-
-            nomfichier[strcspn(nomfichier, "\n")] = '\0';
-
-            save(nomfichier, jeu);
-            printf("Sauvegarde effectuée avec succès");
-            libere_jeu(jeu);
+            supr_sauvegarde(nom_fichier);
+            save(nom_fichier, jeu, actions);
+            printf("Sauvegarde effectuée avec succès\n");
+            libere_jeu(jeu, actions);
             exit(EXIT_SUCCESS);
         }
-
-        if (strcmp(placement_tourelle, "q") == 0 || strcmp(placement_tourelle, "quit") == 0) {
-            break;
-        }
-
         else {
-            Tourelle *t = malloc(sizeof(Tourelle));
-            if (creer_tourelle(jeu, t, placement_tourelle) == 0) {
-                nb_tourelles += 1;
-                ajout(jeu, t, defense);
-                Etudiant *ligne = ligne_i_etudiant(t->ligne, plateau);
-                while (ligne != NULL && ligne->position < t->position) {
-                    ligne = ligne->next_line;
-                }
-                if (ligne != NULL && ligne->position == t->position) {
-                    ligne->enCombat = 1;
-                    ligne->enDeplacement = 0;
-                    while (ligne->next_line != NULL && ligne->next_line->position <= 15 && ligne->next_line->position - ligne->position == 1) {
-                        ligne = ligne->next_line;
-                        ligne->enDeplacement = 0;
-                    }
-
-                }
-                jeu->cagnotte -= t->prix;
+            if (nb_actions >= max_actions) {
+                printf("Trop d'actions !\n");
+                libere_jeu(jeu, actions);
+                exit(EXIT_SUCCESS);
             }
+            actions[nb_actions] = strdup(placement_tourelle);
+            nb_actions += 1;
+
+            if (strcmp(placement_tourelle, "q") == 0 || strcmp(placement_tourelle, "quit") == 0) {
+                break;
+            }
+
+            else {
+                Tourelle *t = malloc(sizeof(Tourelle));
+                if (creer_tourelle(jeu, t, placement_tourelle) == 0) {
+                    nb_tourelles += 1;
+                    ajout(jeu, t, defense);
+                    Etudiant *ligne = ligne_i_etudiant(t->ligne, plateau);
+                    while (ligne != NULL && ligne->position < t->position) {
+                        ligne = ligne->next_line;
+                    }
+                    if (ligne != NULL && ligne->position == t->position) {
+                        ligne->enCombat = 1;
+                        ligne->enDeplacement = 0;
+                        while (ligne->next_line != NULL && ligne->next_line->position <= 15 && ligne->next_line->position - ligne->position == 1) {
+                            ligne = ligne->next_line;
+                            ligne->enDeplacement = 0;
+                        }
+
+                    }
+                    jeu->cagnotte -= t->prix;
+                }
+            }
+            afficher_jeu(jeu, plateau, defense);
+            printf("\n");
+            printf("Il vous reste %ld 🪙\n", jeu->cagnotte);
         }
-        afficher_jeu(jeu, plateau, defense);
-        printf("\n");
-        printf("Il vous reste %ld 🪙\n", jeu->cagnotte);
     }
     while (placement_tourelle[0] != 'o');
 }
@@ -193,7 +209,7 @@ void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
 
 
 
-void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
+void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]) {
     Tourelle *t = jeu->tourelles;
     while (t != NULL) {
         if (degat(t->type) != -1) {
@@ -211,7 +227,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                         jeu->cagnotte += gain(e->type);
                         if (e->next == NULL) {
                             printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-                            libere_jeu(jeu);
+                            libere_jeu(jeu, actions);
                             exit(0);
                         }
                         jeu->etudiants = e->next;

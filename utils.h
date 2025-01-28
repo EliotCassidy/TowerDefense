@@ -46,7 +46,7 @@
         Etudiant* ligne7;
     } Plateau;
 
-        typedef struct {
+    typedef struct {
         Tourelle* ligne1;
         Tourelle* ligne2;
         Tourelle* ligne3;
@@ -56,12 +56,18 @@
         Tourelle* ligne7;
     } Defense;
 
+
     extern int nb_tourelles;
+    extern int nb_actions;
+    extern int max_actions;
+    extern int placement;
+    extern int pt_ligne;
 
 
 
     void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau);
-    void libere_jeu(Jeu *jeu);
+    void supr_sauvegarde(const char* nom_fichier);
+    void libere_jeu(Jeu *jeu, char *actions[]);
     int afficher_menu();
     int visualiser_vague(Jeu *jeu, Plateau *plateau);
 
@@ -71,10 +77,10 @@
     int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos);
     void ajout(Jeu *jeu, Tourelle *t, Defense *d);
 
-    void placer_tourelles(Jeu *jeu, Defense *defense, Plateau *plateau);
+    void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *actions[], char* nom_fichier, char **instruction, int *n);
     void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense);
     void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour);
-    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense);
+    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]);
     Etudiant* ligne_i_etudiant(int l, Plateau *plateau);
     void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p);
     void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
@@ -87,9 +93,7 @@
     int gain(char type);
 
     Tourelle* ligne_i_tourelle(int l, Defense *defense);
-
-    void save_tourelle(const char* nomfichier, Tourelle* head);
-    void save_etudiant(const char* nomfichier, Etudiant* head);
-    void save(const char* nomfichier, Jeu* jeu);
+    void save(const char* nomfichier, Jeu* jeu, char * actions[]);
+    void lire_instruction(char * nom_fichier, char ** instructions);
 
 #endif
