@@ -4,7 +4,6 @@
 
 
 void save_tourelle(const char* nomfichier, Tourelle* head)  {
-    //int nb_tourelle = 0;
     FILE * sauvegarde = fopen("nomfichier", "w");
     if (sauvegarde == NULL) {
         perror("Erreur lors de la création du fichier");
@@ -15,13 +14,11 @@ void save_tourelle(const char* nomfichier, Tourelle* head)  {
     while (tmp != NULL) {
         fprintf(sauvegarde, "%d %d %d %d %d\n", tmp->type, tmp->pointsDeVie, tmp->ligne, tmp->position, tmp->prix );
         tmp = tmp->next;
-        //nb_tourelle ++;
     } 
 
     fprintf(sauvegarde, "\n");
 
     fclose(sauvegarde);
-    //return nb_tourelle;
 }
 
 void save_etudiant(const char* nomfichier, Etudiant* head) {
@@ -33,7 +30,7 @@ void save_etudiant(const char* nomfichier, Etudiant* head) {
 
     Etudiant* tmp = head;
     while (tmp != NULL) {
-        fprintf(sauvegarde, "%d %d %d %d %d %d\n", tmp->type, tmp->pointsDeVie, tmp->position, tmp->vitesse, tmp->tour);
+        fprintf(sauvegarde, "%d %d %d %d %d\n", tmp->type, tmp->pointsDeVie, tmp->position, tmp->vitesse, tmp->tour);
     }
     fprintf(sauvegarde, "\n");
 
@@ -47,7 +44,7 @@ void save(const char* nomfichier, Jeu* jeu) {
     save_etudiant(nomfichier, jeu->etudiants);
     printf("Etudiant et tourelles save avec succès");
     FILE* sauvegarde = fopen(nomfichier, "a");
-    fprintf(sauvegarde, "%d, %d\n", jeu->cagnotte, jeu->tour);
+    fprintf(sauvegarde, "%ld, %d\n", jeu->cagnotte, jeu->tour);
     fclose(sauvegarde);
 
     printf("Tout est sauvgardé grace à dieu");

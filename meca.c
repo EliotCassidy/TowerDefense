@@ -111,7 +111,7 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
         }
         while (scan_propre(placement_tourelle) == 0);
 
-        if (placement_tourelle[0] == 'S') {
+        if (strcmp(placement_tourelle, "s") == 0 || strcmp(placement_tourelle, "save") == 0) {
             char nomfichier[100];
             
             do {
@@ -120,15 +120,16 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
 
             nomfichier[strcspn(nomfichier, "\n")] = '\0';
 
-            printf("%s\n", nomfichier);
             save(nomfichier, jeu);
             printf("Sauvegarde effectuée avec succès");
+            libere_jeu(jeu);
             exit(EXIT_SUCCESS);
         }
 
         if (strcmp(placement_tourelle, "q") == 0 || strcmp(placement_tourelle, "quit") == 0) {
             break;
         }
+
         else {
             Tourelle *t = malloc(sizeof(Tourelle));
             if (creer_tourelle(jeu, t, placement_tourelle) == 0) {
