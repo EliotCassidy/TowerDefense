@@ -8,8 +8,13 @@
 
 
 int scan_propre(char *entree) {
-    if (entree[0] == 'o') {
+    if (strcmp(entree, "q") == 0 || strcmp(entree, "quit") == 0) {
         return 1;
+    }
+
+    if (strcmp(entree, "h") == 0 || strcmp(entree, "help") == 0) {
+        printf("HELP A FAIRE\n");
+        return 0;
     }
 
     if (strlen(entree) < 3 || strlen(entree) > 4) {
@@ -17,7 +22,7 @@ int scan_propre(char *entree) {
     }
 
 
-    if (entree[0] != 'P' && entree[0] != 'T') {
+    if (entree[0] != 'P' && entree[0] != 'T' && entree[0] != 'B' && entree[0] != 'G' && entree[0] != 'S') {
         return 0;
     }
 
@@ -49,16 +54,28 @@ int scan_propre(char *entree) {
 
 int degat(char type) {
     switch (type) {
-        case 'T': //gentil
+        //gentil
+        case 'T': // Tourelle
             return 1;
-        case 'P': //gentil
-            return 3;
-        case 'Z': //mechant
-            return 1;
-        case 'M':
+        case 'P': // Professeur
             return 2;
-        case 'R':
+        case 'B': // Bouclier
+            return 0;
+        case 'G': // Greve
+            return -2;
+        case 'S': // Stage
+            return -1;
+
+
+        //mechant
+        case 'Z': // Zzzzz
             return 1;
+        case 'M': // Majorant
+            return 3;
+        case 'R': // Redoublant
+            return 1;
+        case 'C': // Conditionel
+            return 4;
         default:
             return -1;
     }
@@ -70,6 +87,12 @@ int prix(char type) {
             return 200;
         case 'P':
             return 500;
+        case 'B':
+            return 1000;
+        case 'G':
+            return 1000;
+        case 'S':
+            return 1000;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
@@ -79,15 +102,25 @@ int prix(char type) {
 int pdv(char type) {
     switch (type) {
         case 'T':
-            return 1;
+            return 3;
         case 'P':
-            return 2;
+            return 3;
+        case 'B':
+            return 9;
+        case 'G':
+            return 1;
+        case 'S':
+            return 1;
+        
+
         case 'Z':
-            return 3;
-        case 'M':
-            return 3;
-        case 'R':
             return 5;
+        case 'M':
+            return 5;
+        case 'R':
+            return 7;
+        case 'C':
+            return 2;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
@@ -99,9 +132,11 @@ int gain(char type) {
         case 'R':
             return 300;
         case 'M':
-            return 300;
+            return 350;
         case 'Z':
-            return 150;
+            return 100;
+        case 'C':
+            return 300;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
@@ -111,11 +146,13 @@ int gain(char type) {
 int vitesse(char type) {
     switch (type) {
         case 'M':
-            return 2;
+            return 3;
         case 'R':
             return 1;
         case 'Z':
             return 1;
+        case 'C':
+            return 2;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);

@@ -102,17 +102,17 @@ void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p) {
 
 
 void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
-    char placement_tourelle[6] = {0};
+    char placement_tourelle[10] = {0};
     do {
         do {
-            printf("Voulez-vous arrêter (o) ? \nSi non, où voulez vous la placer [Type tourelle (T/P/...)][Ligne tourelle (1/.../7)][Position tourelle (1/.../15)] ?\n");
+            printf("Placez des tourelles (Tapez 'h' ou 'help' pour les descriptions et tapez 'q' ou 'quit' pour passez au tour suivant)\n");
             fgets(placement_tourelle, sizeof(placement_tourelle), stdin);
             placement_tourelle[strcspn(placement_tourelle, "\n")] = '\0';
         }
         while (scan_propre(placement_tourelle) == 0);
 
 
-        if (placement_tourelle[0] == 'o') {
+        if (strcmp(placement_tourelle, "q") == 0 || strcmp(placement_tourelle, "quit") == 0) {
             break;
         }
         else {
@@ -185,62 +185,78 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
             Etudiant *e = jeu->etudiants;
             Etudiant *prev = jeu->etudiants;
             if (e->ligne == t->ligne && t->position <= e->position && (e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) )) {
-                e->pointsDeVie -= degat(t->type);
-
-                if (e->pointsDeVie <= 0) {
-                    jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
-                    jeu->cagnotte += gain(e->type);
-                    if (e->next == NULL) {
-                        printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-                        libere_jeu(jeu);
-                        exit(0);
-                    }
-                    jeu->etudiants = e->next;
-                    if (e->next_line != NULL) {
-                        e->next_line->prev_line = e->prev_line;
-                        if (e->prev_line == NULL) {
-                            modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
-                        }
-                        else {
-                            e->prev_line->next_line = e->next_line;
-                        }
-                    }
-                    else {
-                        if (e->prev_line == NULL) {
-                            modifier_ligne_i_etudiant(e->ligne, NULL, plateau);
-                        }
-                        else {
-                            e->prev_line->next_line = NULL;
-                        }
-                    }
-                    free(e);
+                if (t->type == 'G') {
+                    e->vitesse = 1;
                 }
-            }
-            else {
-                e = e->next;
-                while (e != NULL) {
-                    if (e->ligne == t->ligne && t->position <= e->position && (e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) ) ) {
-                        e->pointsDeVie -= degat(t->type);
-                        if (e->pointsDeVie <= 0) {
-                            jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
-                            jeu->cagnotte += gain(e->type);
-                            prev->next = e->next;
+                else {
+                    e->pointsDeVie -= degat(t->type);
+
+                    if (e->pointsDeVie <= 0) {
+                        jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
+                        jeu->cagnotte += gain(e->type);
+                        if (e->next == NULL) {
+                            printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+                            libere_jeu(jeu);
+                            exit(0);
+                        }
+                        jeu->etudiants = e->next;
+                        if (e->next_line != NULL) {
+                            e->next_line->prev_line = e->prev_line;
                             if (e->prev_line == NULL) {
                                 modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
                             }
                             else {
                                 e->prev_line->next_line = e->next_line;
                             }
-                            if (e->next_line != NULL) {
-                                e->next_line->prev_line = e->prev_line;
-                            }
-                            free(e);
                         }
-                        break;
+                        else {
+                            if (e->prev_line == NULL) {
+                                modifier_ligne_i_etudiant(e->ligne, NULL, plateau);
+                            }
+                            else {
+                                e->prev_line->next_line = NULL;
+                            }
+                        }
+                        free(e);
+                    }
+                }
+
+            }
+            else {
+                e = e->next;
+                while (e != NULL) {
+                    if (e->ligne == t->ligne && t->position <= e->position && (e->position <= 15 || (e->position == 16 && e->enDeplacement == 1) ) ) {
+                        if (t->type == 'G') {
+                            e->vitesse = 1;
+                        }
+                        else {
+                            e->pointsDeVie -= degat(t->type);
+                            if (e->pointsDeVie <= 0) {
+                                jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
+                                jeu->cagnotte += gain(e->type);
+                                prev->next = e->next;
+                                if (e->prev_line == NULL) {
+                                    modifier_ligne_i_etudiant(e->ligne, e->next_line, plateau);
+                                }
+                                else {
+                                    e->prev_line->next_line = e->next_line;
+                                }
+                                if (e->next_line != NULL) {
+                                    e->next_line->prev_line = e->prev_line;
+                                }
+                                free(e);
+                            }
+                            break;
+                        }
                     }
                     e = e->next;
                     prev = prev->next;
                 }
+            }
+        }
+        else {
+            if (t->type == 'S') {
+                jeu->cagnotte += 500*(pow(t->niveau, 2));
             }
         }
         t = t->next;
@@ -323,10 +339,10 @@ int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
                 // . . . Z ou // . Z .... Z
                 if (t == NULL) {
                     if (e->prev_line == NULL) {
-                        e->position -= vitesse(e->type);
+                        e->position -= e->vitesse;
                     }
                     else {
-                        e->position = max(e->position - vitesse(e->type), e->prev_line->position + 1);
+                        e->position = max(e->position - e->vitesse, e->prev_line->position + 1);
                     }
                 }
                 else {
@@ -337,38 +353,38 @@ int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
                     if (t->position <= e->position) {
                         // T ... Z
                         if (e->prev_line == NULL) {
-                            if (t->position >= e->position - vitesse(e->type)) {
+                            if (t->position >= e->position - e->vitesse) {
                                 e->position = t->position;
                                 e->enCombat = 1;
                                 e->enDeplacement = 0;
                             }
                             else {
-                                e->position -= vitesse(e->type);
+                                e->position -= e->vitesse;
                             }
                         }
                         else {
                             // Z ... T ... Z
                             if (e->prev_line->position < t->position) {
-                                if (t->position >= e->position - vitesse(e->type)) {
+                                if (t->position >= e->position - e->vitesse) {
                                     e->position = t->position;
                                     e->enCombat = 1;
                                 }
                                 else {
-                                    e->position -= vitesse(e->type);
+                                    e->position -= e->vitesse;
                                 }
                             }
                             // T ... Z ... Z ou ... TZ ... Z ou qui vient de finir le combat
                             else {
-                                e->position = max(e->prev_line->position + 1, e->position - vitesse(e->type));
+                                e->position = max(e->prev_line->position + 1, e->position - e->vitesse);
                             }
                         }
                         }
                     else {
                         if (e->prev_line == NULL) {
-                            e->position -= vitesse(e->type);
+                            e->position -= e->vitesse;
                         }
                         else {
-                            e->position = max(e->position - vitesse(e->type), e->prev_line->position + 1);
+                            e->position = max(e->position - e->vitesse, e->prev_line->position + 1);
                         }                            
                     }
                 }
