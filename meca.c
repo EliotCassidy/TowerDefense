@@ -213,7 +213,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                             e->prev_line->next_line = NULL;
                         }
                     }
-                    // free(e);
+                    free(e);
                 }
             }
             else {
@@ -234,8 +234,8 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                             if (e->next_line != NULL) {
                                 e->next_line->prev_line = e->prev_line;
                             }
+                            free(e);
                         }
-                        // free(e);
                         break;
                     }
                     e = e->next;
@@ -287,7 +287,7 @@ void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
                     }
                     tmp->next = t->next;
                 }
-                // free(t);
+                free(t);
             }
         }
         e = e->next;
