@@ -67,7 +67,7 @@
 
     void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau);
     void supr_sauvegarde(const char* nom_fichier);
-    void libere_jeu(Jeu *jeu, char *actions[]);
+    void libere_jeu(Jeu *jeu, char *actions[], char ** instructions);
     int afficher_menu();
     int visualiser_vague(Jeu *jeu, Plateau *plateau);
 
@@ -80,7 +80,7 @@
     void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *actions[], char* nom_fichier, char **instruction, int *n);
     void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense);
     void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour);
-    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]);
+    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction);
     Etudiant* ligne_i_etudiant(int l, Plateau *plateau);
     void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p);
     void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);

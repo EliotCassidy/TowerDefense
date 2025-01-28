@@ -129,13 +129,13 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *action
             supr_sauvegarde(nom_fichier);
             save(nom_fichier, jeu, actions);
             printf("Sauvegarde effectuée avec succès\n");
-            libere_jeu(jeu, actions);
+            libere_jeu(jeu, actions, instruction);
             exit(EXIT_SUCCESS);
         }
         else {
             if (nb_actions >= max_actions) {
                 printf("Trop d'actions !\n");
-                libere_jeu(jeu, actions);
+                libere_jeu(jeu, actions, instruction);
                 exit(EXIT_SUCCESS);
             }
             actions[nb_actions] = strdup(placement_tourelle);
@@ -209,7 +209,7 @@ void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
 
 
 
-void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]) {
+void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction) {
     Tourelle *t = jeu->tourelles;
     while (t != NULL) {
         if (degat(t->type) != -1) {
@@ -227,7 +227,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]
                         jeu->cagnotte += gain(e->type);
                         if (e->next == NULL) {
                             printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-                            libere_jeu(jeu, actions);
+                            libere_jeu(jeu, actions, instruction);
                             exit(0);
                         }
                         jeu->etudiants = e->next;

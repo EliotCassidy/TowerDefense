@@ -57,7 +57,7 @@ int main(void) {
             placer_tourelles(&jeu, &defense, &plateau, actions, nom_fichier, instructions, &i);
         }
         apparition(&jeu, &plateau, &defense, jeu.tour);
-        tir_tourelles(&jeu, &plateau, &defense, actions);
+        tir_tourelles(&jeu, &plateau, &defense, actions, instructions);
         tir_ennemies(&jeu, &plateau, &defense);
         toucher = avancer_ennemies(&jeu, &plateau, &defense);
         if (toucher == 1) {
@@ -72,6 +72,6 @@ int main(void) {
         jeu.tour++;
     }
     
-    libere_jeu(&jeu, actions);
+    libere_jeu(&jeu, actions, instructions);
     return EXIT_SUCCESS;
 }

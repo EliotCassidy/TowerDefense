@@ -99,7 +99,7 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau) {
     fclose(fichier);
 }
 
-void libere_jeu(Jeu *jeu, char* action[]) {
+void libere_jeu(Jeu *jeu, char* action[], char **instructions) {
     Etudiant *temp = jeu->etudiants;
     while (temp) {
         Etudiant* suivant = temp->next;
@@ -115,4 +115,10 @@ void libere_jeu(Jeu *jeu, char* action[]) {
     for (int i = 0; i < nb_actions; i++) {
         free(action[i]);
     }
+    int i = 0;
+    while (strcmp(instructions[i], "END") != 0) {
+        free(instructions[i]);
+        i++;
+    }
+    free(instructions);
 }
