@@ -123,7 +123,7 @@ int vitesse(char type) {
 }
 
 int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
-    
+    t->type = infos[0];
     t->ligne = infos[1] - '0';
     if (strlen(infos) == 3) {
         t->position = infos[2] - '0';
@@ -136,24 +136,31 @@ int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
 
     while (tmp != NULL) {
         if (tmp->ligne == t->ligne && tmp->position == t->position) {
-            if (tmp->niveau == 3) {
+            if (t->type != tmp->type) {
                 free(t);
-                printf("La tourelle est déjà au niveau maximum\n");
-                return 1;
+                printf("Il y a déjà une tourelle d'un autre type\n");
+                return 1;  
             }
             else {
-                if (pow(prix(infos[0]) * (tmp->niveau + 1), 1.5) > jeu->cagnotte) {
-                    printf("Erreur : Vous avez %ld 🪙, l'amélioration coûte %ld 🪙\n", jeu->cagnotte, (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.5));
+                if (tmp->niveau == 3) {
+                    free(t);
+                    printf("La tourelle est déjà au niveau maximum\n");
                     return 1;
                 }
                 else {
-                    jeu->cagnotte -= (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.5);
-                    tmp->niveau += 1;
-                    tmp->pointsDeVie = (int) (tmp->pointsDeVie + 2*pow(tmp->niveau, 1.2));
-                    free(t);
-                    return 0;
+                    if (pow(prix(infos[0]) * (tmp->niveau + 1), 1.5) > jeu->cagnotte) {
+                        printf("Erreur : Vous avez %ld 🪙, l'amélioration coûte %ld 🪙\n", jeu->cagnotte, (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.5));
+                        free(t);
+                        return 1;
+                    }
+                    else {
+                        jeu->cagnotte -= (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.5);
+                        tmp->niveau += 1;
+                        tmp->pointsDeVie = (int) (tmp->pointsDeVie + 2*pow(tmp->niveau, 1.2));
+                        free(t);
+                        return 1;
+                    }
                 }
-                
             }
         }
         tmp = tmp->next;
@@ -163,7 +170,6 @@ int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
         free(t);
         return 1;
     }
-    t->type = infos[0];
     t->prix = prix(infos[0]);
     t->pointsDeVie = pdv(infos[0]);
     

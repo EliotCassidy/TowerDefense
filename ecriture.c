@@ -112,56 +112,27 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
     effacerEcran();
     for (int ligne = 1; ligne <= 7; ligne++) {
         printf("%d|   ", ligne);
-        Etudiant *e = malloc(sizeof(Etudiant));
-        Tourelle *d = malloc(sizeof(Tourelle));
-        switch (ligne) {
-            case 1:
-                e = plateau->ligne1;
-                d = defense->ligne1;
-                break;
-            case 2:
-                e = plateau->ligne2;
-                d = defense->ligne2;
-                break;
-            case 3:
-                e = plateau->ligne3;
-                d = defense->ligne3;
-                break;
-            case 4:
-                e = plateau->ligne4;
-                d = defense->ligne4;
-                break;
-            case 5:
-                e = plateau->ligne5;
-                d = defense->ligne5;
-                break;
-            case 6:
-                e = plateau->ligne6;
-                d = defense->ligne6;
-                break;
-            case 7:
-                e = plateau->ligne7;
-                d = defense->ligne7;
-                break;
-        }
+        Etudiant *e = ligne_i_etudiant(ligne, plateau);
+        Tourelle *d = ligne_i_tourelle(ligne, defense);
 
         for (int pos = 1; pos <= 15; pos++) {
-            if (d && e && d->position == pos && e->position == pos) {
+            if (d != NULL && e != NULL && d->position == pos && e->position == pos) {
                 printf("%c%1d#%1d%c", d->type, d->pointsDeVie, e->pointsDeVie, e->type);
                 d = d->next_line;
                 e = e->next_line;
             }
-            else if (d && d->position == pos) {
+            else if (d != NULL && d->position == pos) {
                 printf(" %c%2d#", d->type, d->pointsDeVie);
                 d = d->next_line;
             }
-            else if (e && e->position == pos) {
+            else if (e != NULL && e->position == pos) {
                 printf(" %2d%c ", e->pointsDeVie, e->type);
                 e = e->next_line;
             }
             else {
                 printf("  .  ");
             }
+            
             if (pos == 15) {
                 printf("\n");
             }

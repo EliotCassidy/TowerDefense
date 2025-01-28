@@ -121,7 +121,7 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
                 nb_tourelles += 1;
                 ajout(jeu, t, defense);
                 Etudiant *ligne = ligne_i_etudiant(t->ligne, plateau);
-                while (ligne && ligne->position < t->position) {
+                while (ligne != NULL && ligne->position < t->position) {
                     ligne = ligne->next_line;
                 }
                 if (ligne != NULL && ligne->position == t->position) {
@@ -192,6 +192,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                     jeu->cagnotte += gain(e->type);
                     if (e->next == NULL) {
                         printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+                        libere_jeu(jeu);
                         exit(0);
                     }
                     jeu->etudiants = e->next;
@@ -212,6 +213,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                             e->prev_line->next_line = e->next_line;
                         }
                     }
+                    // free(e);
                 }
             }
             else {
@@ -233,6 +235,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense) {
                                 e->next_line->prev_line = e->prev_line;
                             }
                         }
+                        // free(e);
                         break;
                     }
                     e = e->next;
@@ -284,6 +287,7 @@ void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
                     }
                     tmp->next = t->next;
                 }
+                // free(t);
             }
         }
         e = e->next;

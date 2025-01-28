@@ -86,4 +86,6 @@
     int vitesse(char type);
     int gain(char type);
 
+    Tourelle* ligne_i_tourelle(int l, Defense *defense);
+
 #endif
