@@ -284,7 +284,7 @@ void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
     while (e) {
         if (e->enCombat == 1) {
             Tourelle *t = jeu->tourelles;
-            while (t->ligne != e->ligne && t->position != e->position) {
+            while (t->ligne != e->ligne || t->position != e->position) {
                 t = t->next;
             }
             t->pointsDeVie -= degat(e->type);
