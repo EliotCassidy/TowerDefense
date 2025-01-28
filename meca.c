@@ -102,7 +102,7 @@ void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p) {
 
 
 void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
-    char placement_tourelle[6];
+    char placement_tourelle[6] = {0};
     do {
         do {
             printf("Voulez-vous arrêter (o) ? \nSi non, où voulez vous la placer [Type tourelle (T/P/...)][Ligne tourelle (1/.../7)][Position tourelle (1/.../15)] ?\n");
