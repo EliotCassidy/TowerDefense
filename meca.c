@@ -111,6 +111,20 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau) {
         }
         while (scan_propre(placement_tourelle) == 0);
 
+        if (placement_tourelle[0] == 'S') {
+            char nomfichier[100];
+            
+            do {
+                printf("Entrez le nom de la sauvegarde : ");
+            } while (fgets(nomfichier, 100, stdin) == NULL);
+
+            nomfichier[strcspn(nomfichier, "\n")] = '\0';
+
+            printf("%s\n", nomfichier);
+            save(nomfichier, jeu);
+            printf("Sauvegarde effectuée avec succès");
+            exit(EXIT_SUCCESS);
+        }
 
         if (strcmp(placement_tourelle, "q") == 0 || strcmp(placement_tourelle, "quit") == 0) {
             break;

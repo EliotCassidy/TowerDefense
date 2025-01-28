@@ -88,4 +88,8 @@
 
     Tourelle* ligne_i_tourelle(int l, Defense *defense);
 
+    void save_tourelle(const char* nomfichier, Tourelle* head);
+    void save_etudiant(const char* nomfichier, Etudiant* head);
+    void save(const char* nomfichier, Jeu* jeu);
+
 #endif

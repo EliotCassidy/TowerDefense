@@ -17,6 +17,10 @@ int scan_propre(char *entree) {
         return 0;
     }
 
+    if (strcmp(entree, "s") == 0 || strcmp(entree, "save") == 0) {
+        return 1;
+    }
+
     if (strlen(entree) < 3 || strlen(entree) > 4) {
         return 0;
     }
