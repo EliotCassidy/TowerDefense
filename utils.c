@@ -8,9 +8,15 @@
 
 
 int scan_propre(char *entree) {
+
+    if (entree[0] == 'S') {
+        return 1;
+    }
+
     if (entree[0] == 'o') {
         return 1;
     }
+
 
     if (strlen(entree) < 3 || strlen(entree) > 4) {
         return 0;
