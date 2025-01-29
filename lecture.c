@@ -122,3 +122,23 @@ void libere_jeu(Jeu *jeu, char* action[], char **instructions) {
     }
     free(instructions);
 }
+
+
+void lire_score(char *classement, int *score) {
+    FILE* fichier = fopen(classement, "r");
+    if (!fichier) {
+        FILE* fichier = fopen(classement, "w");
+        fclose(fichier);
+        return;
+    }
+
+    int i = 0;
+    while (i < 10 && fscanf(fichier, "%d", &score[i]) == 1) {
+        // Lire l'entier et ignorer le reste de la ligne
+        while (fgetc(fichier) != '\n' && !feof(fichier));  
+        i++;
+    }
+
+    fclose(fichier);
+
+}

@@ -75,3 +75,45 @@ void lire_instruction(char * nom_fichier, char ** instructions) {
     }
     instructions[i] = "END";
 }
+
+void ajouter_classement(char *classement, int score, char *nom, int i) {
+    FILE *tmp = fopen("tmp.txt", "w");
+    FILE *f = fopen(classement, "r");
+    char ligne[50];
+    for (int j = 0; j < i; j++) {
+        fgets(ligne, sizeof(ligne), f);
+        fputs(ligne, tmp);
+    }
+    fprintf(tmp, "%d %s\n", score, nom);
+    for (int j = i; j < 9; j++) {
+        if (!fgets(ligne, sizeof(ligne), f)) {
+            break;
+        }
+        fputs(ligne, tmp);
+    }
+
+
+    fclose(f);
+    fclose(tmp);
+
+    remove(classement);
+    rename("tmp.txt", classement);
+
+}
+
+void verifier_score(Jeu *jeu, int *scores, char *classement) {
+    if (jeu->score <= scores[9]) {
+        return;
+    }
+    int i;
+    for (i = 0; i < 10; i++) {
+        if (jeu->score > scores[i]) {
+            break;
+        }
+    }
+    printf("BRAVO ! Vous êtes le numéro %d dans le classement !\nComment vous appelez vous ?\n", i+1);
+    char nom[20];
+    scanf("%19s", nom);
+    ajouter_classement(classement, jeu->score, nom, i);
+    printf("Votre score a bien été enregistré\n");
+}

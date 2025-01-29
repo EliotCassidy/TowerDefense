@@ -14,9 +14,11 @@ int main(void) {
     Plateau plateau = {.ligne1 = NULL, .ligne2 = NULL, .ligne3 = NULL, .ligne4 = NULL, .ligne5 = NULL, .ligne6 = NULL, .ligne7 = NULL};
     Defense defense = {.ligne1 = NULL, .ligne2 = NULL, .ligne3 = NULL, .ligne4 = NULL, .ligne5 = NULL, .ligne6 = NULL, .ligne7 = NULL};
     Jeu jeu = { .tourelles = NULL, .etudiants = NULL, .cagnotte = 0, .tour = 0 , .score = 0, .niveau = 0, .mode = 0};
+    
     char *actions[max_actions];
+    int score[10] = {0};
 
-
+    char *classement = "classement.txt";
     char *nom_fichier = "niveau.txt";
     char **instructions = malloc(max_actions * sizeof(char *));
     instructions[0]= "END";
@@ -29,6 +31,7 @@ int main(void) {
     }
     else if (jeu.mode == 1) {
         lire_fichier(nom_fichier, &jeu, &plateau);
+        lire_score(classement, score);
         supr_sauvegarde(nom_fichier);
     }
     else if (jeu.mode == 2) {
@@ -38,6 +41,7 @@ int main(void) {
     else if (jeu.mode == 3) {
         lire_fichier(nom_fichier, &jeu, &plateau);
         lire_instruction(nom_fichier, instructions);
+        lire_score(classement, score);
     }
 
     printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VISUALISER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
@@ -57,7 +61,7 @@ int main(void) {
             placer_tourelles(&jeu, &defense, &plateau, actions, nom_fichier, instructions, &i);
         }
         apparition(&jeu, &plateau, &defense, jeu.tour);
-        tir_tourelles(&jeu, &plateau, &defense, actions, instructions);
+        tir_tourelles(&jeu, &plateau, &defense, actions, instructions, score, classement);
         tir_ennemies(&jeu, &plateau, &defense);
         toucher = avancer_ennemies(&jeu, &plateau, &defense);
         if (toucher == 1) {
@@ -73,5 +77,6 @@ int main(void) {
     }
     
     libere_jeu(&jeu, actions, instructions);
+    verifier_score(&jeu, score, classement);
     return EXIT_SUCCESS;
 }

@@ -209,7 +209,7 @@ void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
 
 
 
-void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction) {
+void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction, int *score, char* classement) {
     Tourelle *t = jeu->tourelles;
     while (t != NULL) {
         if (degat(t->type) != -1) {
@@ -227,6 +227,7 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]
                         jeu->cagnotte += gain(e->type);
                         if (e->next == NULL) {
                             printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+                            verifier_score(jeu, score, classement);
                             libere_jeu(jeu, actions, instruction);
                             exit(0);
                         }

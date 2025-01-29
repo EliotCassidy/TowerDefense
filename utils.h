@@ -80,7 +80,7 @@
     void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *actions[], char* nom_fichier, char **instruction, int *n);
     void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense);
     void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour);
-    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction);
+    void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction, int *score, char* classement);
     Etudiant* ligne_i_etudiant(int l, Plateau *plateau);
     void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p);
     void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense);
@@ -95,5 +95,7 @@
     Tourelle* ligne_i_tourelle(int l, Defense *defense);
     void save(const char* nomfichier, Jeu* jeu, char * actions[]);
     void lire_instruction(char * nom_fichier, char ** instructions);
+    void lire_score(char *classement, int *score);
+    void verifier_score(Jeu *jeu, int *scores, char* classement);
 
 #endif
