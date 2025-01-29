@@ -74,6 +74,7 @@ void lire_instruction(char * nom_fichier, char ** instructions) {
         }
     }
     instructions[i] = "END";
+    fclose(f);
 }
 
 void ajouter_classement(char *classement, int score, char *nom, int i) {
