@@ -6,7 +6,10 @@
 
 
 void save(const char* nomfichier, Jeu* jeu, char *actions[]) {
-
+    // Sauvegarde des actions du joueur:
+    // - Ajoute un marqueur ##### pour séparer la configuration du niveau
+    // - Enregistre chaque action dans l'ordre d'exécution
+    
     FILE* fichier = fopen(nomfichier, "a");
         if (!fichier) {
             perror("Erreur lors de l'ouverture du fichier");
@@ -21,6 +24,10 @@ void save(const char* nomfichier, Jeu* jeu, char *actions[]) {
 }
 
 void supr_sauvegarde(const char* nom_fichier) {
+    // Nettoyage du fichier de sauvegarde:
+    // - Conserve uniquement la configuration du niveau
+    // - Supprime toutes les actions précédentes (après le marqueur #####)
+    // - Utilise un fichier temporaire
     
     FILE *f = fopen(nom_fichier, "r+");
     if (f == NULL) {
@@ -55,6 +62,11 @@ void supr_sauvegarde(const char* nom_fichier) {
 }
 
 void lire_instruction(char * nom_fichier, char ** instructions) {
+    // Lecture du fichier de sauvegarde:
+    // - Ignore tout ce qui précède le marqueur #####
+    // - Charge les instructions jusqu'à la fin du fichier
+    // - Termine la liste avec "END"
+    
     FILE *f = fopen(nom_fichier, "r");
     if (f == NULL) {
         perror("Erreur d'ouverture du fichier");
@@ -78,6 +90,11 @@ void lire_instruction(char * nom_fichier, char ** instructions) {
 }
 
 void ajouter_classement(char *classement, int score, char *nom, int i) {
+    // Mise à jour du tableau des scores:
+    // - Insère le nouveau score à la position i
+    // - Décale les scores inférieurs et préserve les 10 meilleurs scores uniquement
+    // - Utilise un fichier temporaire
+    
     FILE *tmp = fopen("tmp.txt", "w");
     FILE *f = fopen(classement, "r");
     char ligne[50];
@@ -103,6 +120,11 @@ void ajouter_classement(char *classement, int score, char *nom, int i) {
 }
 
 void verifier_score(Jeu *jeu, int *scores, char *classement) {
+    // Gestion du système de high scores:
+    // - Vérifie si le score actuel mérite d'être dans le top 10
+    // - Détermine la position exacte du nouveau score
+    // - Demande le nom de l'utilisateur pour l'enregistrement
+    
     if (jeu->score <= scores[9]) {
         return;
     }

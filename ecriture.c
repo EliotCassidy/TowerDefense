@@ -43,6 +43,11 @@ void effacerEcran() {
 }
 
 int afficher_menu() {
+    // Interface principale du jeu:
+    // - Affichage du titre et des options
+    // - Gestion des choix utilisateur (1: niveau, 2: infini, 3: chargement)
+    // - Retourne -1 en cas d'entrée invalide
+    
     effacerEcran();
     afficherTitre();
     afficherInstructions();
@@ -74,6 +79,11 @@ int afficher_menu() {
 
 
 int visualiser_vague(Jeu *jeu, Plateau *plateau) {
+    // Affichage des vagues d'ennemis à venir:
+    // - Représentation ligne par ligne des ennemis
+    // - Affiche les points de vie et le type de chaque ennemi
+    // - Retourne 0 si aucune vague, 1 sinon
+    
     printf("Vagues :\n");
     Etudiant *maxi = jeu->etudiants;
     if (maxi == NULL) {
@@ -109,6 +119,11 @@ int visualiser_vague(Jeu *jeu, Plateau *plateau) {
 }
 
 void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
+    // Rendu du plateau de jeu:
+    // - Affichage simultané des tourelles et ennemis
+    // - Gestion des collisions d'affichage (même case)
+    // - Format: Type_Tourelle PDV_Tourelle # PDV_Ennemi Type_Ennemi
+    
     effacerEcran();
     for (int ligne = 1; ligne <= 7; ligne++) {
         printf("%d|   ", ligne);

@@ -105,6 +105,10 @@ void modifier_ligne_i_etudiant(int l, Etudiant *e, Plateau *p) {
 
 
 void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *actions[], char* nom_fichier, char **instruction, int *n) {
+    // Gestion interactive du placement des tourelles:
+    // - Traitement des actions sauvegardées de l'utilisateur (placement, sauvegarde)
+    // - Mise à jour des états de combat lors du placement sur un ennemi
+    
     char placement_tourelle[10] = {0};
     do {
         if (instruction[*n] != NULL && (strcmp(instruction[*n], "END") == 0 || strcmp(instruction[*n], "END\n") == 0)) {
@@ -176,6 +180,9 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *action
 
 
 int vide_devant(Etudiant *e, Etudiant *ligne) {
+    // Vérifie l'espace disponible pour l'apparition d'un ennemi:
+    // - Analyse si ennemie déjà en position 15 et si il est en mouvement ou non
+    
     int cpt = 0;
     while (ligne != NULL && ligne->position <= 14 && cpt < 10) {
         ligne = ligne->next_line;
@@ -190,6 +197,11 @@ int vide_devant(Etudiant *e, Etudiant *ligne) {
 }
 
 void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
+    // Système d'apparition des ennemis:
+    // - Gère le timing d'apparition selon le tour
+    // - Vérifie l'espace disponible avant l'apparition pour détérminer si l'ennemie est en mouvement
+    // - Place les ennemis en position d'attente (16) si nécessaire
+    
     Etudiant *e = jeu->etudiants;
     while (e && e->tour <= jeu->tour) {
         if (e->position > 15) {
@@ -210,6 +222,12 @@ void apparition(Jeu *jeu, Plateau *plateau, Defense* defense, int tour) {
 
 
 void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[], char **instruction, int *score, char* classement) {
+    // Système de combat des tourelles:
+    // - Application des effets spéciaux (ralentissement pour type 'G')
+    // - Calcul du score selon une formule complexe tenant compte du tour et du nombre de tourelles
+    // - Gestion de la victoire et mise à jour du classement
+    // - Maintien de la cohérence des listes chaînées après élimination d'un ennemi
+    
     Tourelle *t = jeu->tourelles;
     while (t != NULL) {
         if (degat(t->type) != -1) {
@@ -297,6 +315,10 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]
 
 
 void tir_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
+    // Gestion des combats entre ennemis et tourelles:
+    // - Application des dégâts
+    // - Mise à jour des états de combat
+    // - Mise à jour du chainage après destruction d'une tourelle
     Etudiant *e = jeu->etudiants;
     while (e) {
         if (e->enCombat == 1) {
@@ -356,6 +378,11 @@ int max(int x, int y) {
 
 // Selon le chainage next et pas par ligne :(
 int avancer_ennemies(Jeu *jeu, Plateau *plateau, Defense *defense) {
+    // Système de déplacement des ennemis avec gestion des collisions:
+    // - Respect des distances entre ennemis
+    // - Détection des tourelles et engagement du combat
+    // - Retourne 1 si un ennemi atteint la fin, 0 sinon
+    
     Etudiant *e = jeu->etudiants;
     while (e != NULL) {
         if (e->enDeplacement == 1) {

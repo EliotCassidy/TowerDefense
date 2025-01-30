@@ -75,6 +75,11 @@ void ajouter_etudiant(Jeu* jeu, Etudiant* etudiant, Plateau *p) {
 
 
 void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau) {
+    // Lecture du fichier de niveau:
+    // - Chargement de la cagnotte initiale
+    // - Création des vagues d'ennemis avec leur timing et construction progressive du plateau de jeu
+    // - Ne prend pas en compte une éventuelle sauvegarde
+    
     FILE* fichier = fopen(nom_fichier, "r");
     if (!fichier) {
         perror("Erreur lors de l'ouverture du fichier");
@@ -100,6 +105,11 @@ void lire_fichier(const char* nom_fichier, Jeu* jeu, Plateau *plateau) {
 }
 
 void libere_jeu(Jeu *jeu, char* action[], char **instructions) {
+    // Nettoyage complet des ressources du jeu:
+    // - Libération des listes chainées (ennemis et tourelles)
+    // - Suppression de l'historique des actions
+    // - Nettoyage des instructions chargées
+    
     Etudiant *temp = jeu->etudiants;
     while (temp) {
         Etudiant* suivant = temp->next;
@@ -125,6 +135,11 @@ void libere_jeu(Jeu *jeu, char* action[], char **instructions) {
 
 
 void lire_score(char *classement, int *score) {
+    // Gestion du tableau des meilleurs scores:
+    // - Création du fichier s'il n'existe pas
+    // - Remplissage dans score des 10 meilleurs scores
+    // - Ignore les informations supplémentaires sur chaque ligne
+    
     FILE* fichier = fopen(classement, "r");
     if (!fichier) {
         FILE* fichier = fopen(classement, "w");

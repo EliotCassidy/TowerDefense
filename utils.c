@@ -172,6 +172,11 @@ int vitesse(char type) {
 }
 
 int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
+    // Gestion de l'amélioration des tourelles:
+    // - Vérifie si une tourelle existe déjà à cette position
+    // - Gère les niveaux (max 3) et le coût croissant des améliorations
+    // - Retourne 0 si la tourelle doit être placé, 1 sinon
+    
     t->type = infos[0];
     t->ligne = infos[1] - '0';
     if (strlen(infos) == 3) {
@@ -240,8 +245,12 @@ void ajout_liste_chainer(Tourelle *ligne, Tourelle *t) {
 }
 
 void ajout(Jeu *jeu, Tourelle *t, Defense *d) {
+    // Fonction complexe gérant l'ajout d'une tourelle dans deux structures:
+    // 1. La liste chainée globale des tourelles du jeu
+    // 2. La liste chainée spécifique à la ligne de la tourelle
     Tourelle *tmp = jeu->tourelles;
     Tourelle *last = jeu->tourelles;
+    
     switch (t->ligne) {
         case 1:
             if (d->ligne1 == NULL) {
