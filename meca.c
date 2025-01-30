@@ -113,7 +113,7 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *action
     do {
         if (instruction[*n] != NULL && (strcmp(instruction[*n], "END") == 0 || strcmp(instruction[*n], "END\n") == 0)) {
             do {
-                printf("Placez des tourelles (Tapez 'h' ou 'help' pour les descriptions et tapez 'q' ou 'quit' pour passez au tour suivant)\n");
+                printf("Placez des tourelles (Tapez 'h' pour les descriptions, tapez 'q' pour passez au tour suivant, tapez 's' pour sauvegarder la partie)\n");
                 fgets(placement_tourelle, sizeof(placement_tourelle), stdin);
                 placement_tourelle[strcspn(placement_tourelle, "\n")] = '\0';
             }
@@ -147,8 +147,7 @@ void placer_tourelles(Jeu *jeu, Defense* defense, Plateau* plateau, char *action
 
             if (strcmp(placement_tourelle, "q") == 0 || strcmp(placement_tourelle, "quit") == 0) {
                 break;
-            }
-
+            }           
             else {
                 Tourelle *t = malloc(sizeof(Tourelle));
                 if (creer_tourelle(jeu, t, placement_tourelle) == 0) {

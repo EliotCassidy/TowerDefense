@@ -13,7 +13,36 @@ int scan_propre(char *entree) {
     }
 
     if (strcmp(entree, "h") == 0 || strcmp(entree, "help") == 0) {
-        printf("HELP A FAIRE\n");
+        printf("\n=== TYPES DE TOURELLES DISPONIBLES ===\n\n"
+        "T - Tourelle Basique (200 🪙)\n"
+        "    • Dégâts: 1, PV: 3\n"
+        "    • Tourelle économique et fiable\n\n"
+        "P - Professeur (500 🪙)\n"
+        "    • Dégâts: 4, PV: 3\n"
+        "    • Dégâts élevés mais coût important\n\n"
+        "B - Bouclier (1000 🪙)\n"
+        "    • Dégâts: 0, PV: 9\n"
+        "    • Bloque les ennemis sans les blesser\n"
+        "    • Très résistant\n\n"
+        "G - Grève (1000 🪙)\n"
+        "    • Effet spécial: Ralentit les ennemis (vitesse = 1)\n"
+        "    • PV: 1\n"
+        "    • Stratégique pour contrôler le flux d'ennemis\n\n"
+        "S - Stage (1000 🪙)\n"
+        "    • Génère 500*(niveau²) 🪙 par tour\n"
+        "    • PV: 1\n"
+        "    • Investissement pour économie à long terme\n\n"
+        "Note: Toutes les tourelles peuvent être améliorées jusqu'au niveau 3\n"
+        "      Le coût d'amélioration augmente avec le niveau\n\n"
+        "\n=== COMMENT PLACER UNE TOURELLE ===\n\n"
+        "Format: [Type][Ligne][Colonne]\n"
+        "Exemple: T25 place une Tourelle basique en ligne 2, colonne 5\n"
+        "        P715 place un Professeur en ligne 7, colonne 15\n"
+        "        B112 place un Bouclier en ligne 1, colonne 12\n\n"
+        "• Type: T, P, B, G ou S\n"
+        "• Ligne: 1 à 7\n"
+        "• Colonne: 1 à 15\n\n"
+        "Pour améliorer une tourelle, placez le même type au même endroit\n\n");
         return 0;
     }
 
