@@ -147,7 +147,6 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
     
     effacerEcran();
     
-    char buffer[100];
     int largeur_terminal = get_terminal_width();
     int largeur_plateau = 80;
     int padding = (largeur_terminal - largeur_plateau) / 2;
