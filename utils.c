@@ -272,7 +272,7 @@ int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
     }
     t->prix = prix(infos[0]);
     t->pointsDeVie = pdv(infos[0]);
-    
+    t->next_line = NULL;
     t->next = NULL;
     t->niveau = 1;
     return 0;

@@ -44,7 +44,7 @@ int main(void) {
         lire_score(classement, score);
     }
 
-    printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VISUALISER<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+    printf("\n═══════════════════════════════════════VISUALISER═══════════════════════════════════════\n");
     int enCours = visualiser_vague(&jeu, &plateau);
     jeu.tour = 1;
     int toucher = 0;
