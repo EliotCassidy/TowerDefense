@@ -153,8 +153,7 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
     char padding_str[100];
     sprintf(padding_str, "%*s", padding > 0 ? padding : 0, "");
     printf("\n%s%s════════════════════════════════════ TOUR %d ════════════════════════════════════%s\n", padding_str, YELLOW, jeu->tour, RESET);
-    printf("%s%sCagnotte: %ld 🪙                       ", padding_str, GREEN, jeu->cagnotte);
-    printf("%s%sScore: %ld\n%s", padding_str, CYAN, jeu->score, RESET);
+    printf("%s%sCagnotte: %ld 🪙                                                      %sScore: %ld\n%s", padding_str, GREEN, jeu->cagnotte, CYAN, jeu->score, RESET);
     printf("%s╔════════════════════════════════════════════════════════════════════════════════╗\n", padding_str);
     for (int ligne = 1; ligne <= 7; ligne++) {
         printf("%s║ %d│ ", padding_str, ligne);
