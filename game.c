@@ -65,11 +65,15 @@ int main(void) {
         tir_ennemies(&jeu, &plateau, &defense);
         toucher = avancer_ennemies(&jeu, &plateau, &defense);
         if (toucher == 1) {
-            printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>DEFAITE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+            printf("\n%s╔═══════════════════════════════════════╗\n", RED);
+            printf("║          G A M E   O V E R            ║\n");
+            printf("╚═══════════════════════════════════════╝%s\n", RESET);
             break;
         }
         if (jeu.etudiants == NULL) {
-            printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+            printf("\n%s╔═══════════════════════════════════════╗\n", GREEN);
+            printf("║         V I C T O I R E !             ║\n");
+            printf("╚═══════════════════════════════════════╝%s\n", RESET);
             break;
         }
         afficher_jeu(&jeu, &plateau, &defense);

@@ -1,6 +1,17 @@
 #ifndef UTILS_H
     #define UTILS_H
 
+    // Couleurs de base
+    #define GREEN   "\x1b[32m"
+    #define RESET   "\x1b[0m"
+    
+    // Couleurs rétro pour les ennemis
+    #define CYAN    "\x1b[36m"    // Pour les Etudiants (E)
+    #define MAGENTA "\x1b[35m"    // Pour les Redoublants (R)
+    #define YELLOW  "\x1b[33m"    // Pour les Conditionnels (C)
+    #define BLUE    "\x1b[34m"    // Pour les Zzzz (Z)
+    #define RED     "\x1b[31m"    // Pour les Majorants (M)
+
     typedef struct tourelle {
         int type;
         int pointsDeVie;

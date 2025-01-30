@@ -33,13 +33,15 @@ printf(" '----------------'  '----------------'  '----------------'  '----------
 
 // Afficher les instructions interactives
 void afficherInstructions() {
-    printf("1 : Partie dans niveau.txt\n"); // En bas à gauche
-    printf("2 : Partie infinie\n");
-    printf("3 : Charger un fichier de sauvegarde\n"); // En bas à droite
+    printf("%s┌─────────────── MENU ───────────────┐%s\n", CYAN, RESET);
+    printf("%s│%s 1. Partie dans niveau.txt          %s│%s\n", CYAN, YELLOW, CYAN, RESET);
+    printf("%s│%s 2. Partie infinie                  %s│%s\n", CYAN, YELLOW, CYAN, RESET);
+    printf("%s│%s 3. Charger une sauvegarde          %s│%s\n", CYAN, YELLOW, CYAN, RESET);
+    printf("%s└────────────────────────────────────┘%s\n", CYAN, RESET);
 }
 
 void effacerEcran() {
-    printf("\n\n\n\n\n\n\n\n\n\n");
+    printf("\033[2J\033[H");
 }
 
 int afficher_menu() {
@@ -104,7 +106,16 @@ int visualiser_vague(Jeu *jeu, Plateau *plateau) {
 
         for (int el = 1; el <= pos; el++) {
             if (e_ligne != NULL && e_ligne->tour == el && e_ligne->ligne == ligne) {
-                printf(" %2d%c ", e_ligne->pointsDeVie, e_ligne->type);
+                char *color;
+                switch(e_ligne->type) {
+                    case 'E': color = CYAN; break;
+                    case 'R': color = MAGENTA; break;
+                    case 'C': color = YELLOW; break;
+                    case 'Z': color = BLUE; break;
+                    case 'M': color = RED; break;
+                    default: color = RESET;
+                }
+                printf(" %s%2d%c%s ", color, e_ligne->pointsDeVie, e_ligne->type, RESET);
                 e_ligne = e_ligne->next_line;
             }
             else {
@@ -125,23 +136,42 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
     // - Format: Type_Tourelle PDV_Tourelle # PDV_Ennemi Type_Ennemi
     
     effacerEcran();
+    printf("╔════════════════════════════════════════════════════════════════════════════════╗\n");
     for (int ligne = 1; ligne <= 7; ligne++) {
-        printf("%d|   ", ligne);
+        printf("║ %d│ ", ligne);
         Etudiant *e = ligne_i_etudiant(ligne, plateau);
         Tourelle *d = ligne_i_tourelle(ligne, defense);
 
         for (int pos = 1; pos <= 15; pos++) {
             if (d != NULL && e != NULL && d->position == pos && e->position == pos) {
-                printf("%c%1d#%1d%c", d->type, d->pointsDeVie, e->pointsDeVie, e->type);
+                char *color;
+                switch(e->type) {
+                    case 'E': color = CYAN; break;
+                    case 'R': color = MAGENTA; break;
+                    case 'C': color = YELLOW; break;
+                    case 'Z': color = BLUE; break;
+                    case 'M': color = RED; break;
+                    default: color = RESET;
+                }
+                printf("%s%c%1d%s#%s%1d%c%s", GREEN, d->type, d->pointsDeVie, RESET, color, e->pointsDeVie, e->type, RESET);
                 d = d->next_line;
                 e = e->next_line;
             }
             else if (d != NULL && d->position == pos) {
-                printf(" %c%2d#", d->type, d->pointsDeVie);
+                printf(" %s%c%2d%s#", GREEN, d->type, d->pointsDeVie, RESET);
                 d = d->next_line;
             }
             else if (e != NULL && e->position == pos) {
-                printf(" %2d%c ", e->pointsDeVie, e->type);
+                char *color;
+                switch(e->type) {
+                    case 'E': color = CYAN; break;
+                    case 'R': color = MAGENTA; break;
+                    case 'C': color = YELLOW; break;
+                    case 'Z': color = BLUE; break;
+                    case 'M': color = RED; break;
+                    default: color = RESET;
+                }
+                printf(" %s%2d%c%s ", color, e->pointsDeVie, e->type, RESET);
                 e = e->next_line;
             }
             else {
@@ -149,10 +179,12 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
             }
             
             if (pos == 15) {
-                printf("\n");
+                printf(" ║\n");
             }
         }
     }
-        printf(" |\n");
-    printf(" |     1    2    3    4    5    6    7    8    9    10   11   12   13   14   15");
+    printf("║    ___________________________________________________________________________ ║\n");
+    printf("║      1    2    3    4    5    6    7    8    9    10   11   12   13   14   15  ║\n");
+    printf("╚════════════════════════════════════════════════════════════════════════════════╝\n");
+
 }

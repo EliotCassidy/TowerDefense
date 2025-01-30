@@ -243,7 +243,9 @@ void tir_tourelles(Jeu *jeu, Plateau *plateau, Defense* defense, char *actions[]
                         jeu->score += (gain(e->type)*exp(-0.05*jeu->tour)*1/(log(1+nb_tourelles)));
                         jeu->cagnotte += gain(e->type);
                         if (e->next == NULL) {
-                            printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VICTOIRE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+                            printf("\n%s╔═══════════════════════════════════════╗\n", GREEN);
+                            printf("║         V I C T O I R E !             ║\n");
+                            printf("╚═══════════════════════════════════════╝%s\n", RESET);
                             verifier_score(jeu, score, classement);
                             libere_jeu(jeu, actions, instruction);
                             exit(0);
