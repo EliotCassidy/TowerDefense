@@ -5,7 +5,24 @@
 #include <ctype.h>
 #include <math.h>
 #include "utils.h"
+#include <sys/ioctl.h>
+#include <unistd.h>
 
+int get_terminal_width(void) {
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    return w.ws_col;
+}
+
+void print_centered(const char* str) {
+    int width = get_terminal_width();
+    int padding = (width - strlen(str)) / 2;
+    if (padding > 0) {
+        printf("%*s%s\n", padding, "", str);
+    } else {
+        printf("%s\n", str);
+    }
+}
 
 int scan_propre(char *entree) {
     if (strcmp(entree, "q") == 0 || strcmp(entree, "quit") == 0) {

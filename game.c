@@ -51,9 +51,6 @@ int main(void) {
     int i = 0;
 
     while (enCours) {
-        printf("\n%s════════════════════════ TOUR %d ════════════════════════%s\n", YELLOW, jeu.tour, RESET);
-        printf("%sCagnotte: %ld 🪙                            ", GREEN, jeu.cagnotte);
-        printf("%sScore: %ld\n%s", CYAN, jeu.score, RESET);
         if (jeu.mode == 3 && strcmp(instructions[i], "END") != 0) {
             placer_tourelles(&jeu, &defense, &plateau, actions, nom_fichier, instructions, &i);
         }

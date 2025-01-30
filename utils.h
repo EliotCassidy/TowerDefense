@@ -109,4 +109,7 @@
     void lire_score(char *classement, int *score);
     void verifier_score(Jeu *jeu, int *scores, char* classement);
 
+    int get_terminal_width(void);
+    void print_centered(const char* str);
+
 #endif

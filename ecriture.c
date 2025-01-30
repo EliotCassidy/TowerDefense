@@ -136,9 +136,19 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
     // - Format: Type_Tourelle PDV_Tourelle # PDV_Ennemi Type_Ennemi
     
     effacerEcran();
-    printf("╔════════════════════════════════════════════════════════════════════════════════╗\n");
+    
+    char buffer[100];
+    int largeur_terminal = get_terminal_width();
+    int largeur_plateau = 80;
+    int padding = (largeur_terminal - largeur_plateau) / 2;
+    char padding_str[100];
+    sprintf(padding_str, "%*s", padding > 0 ? padding : 0, "");
+    printf("\n%s%s════════════════════════════════════ TOUR %d ════════════════════════════════════%s\n", padding_str, YELLOW, jeu->tour, RESET);
+    printf("%s%sCagnotte: %ld 🪙                       ", padding_str, GREEN, jeu->cagnotte);
+    printf("%s%sScore: %ld\n%s", padding_str, CYAN, jeu->score, RESET);
+    printf("%s╔════════════════════════════════════════════════════════════════════════════════╗\n", padding_str);
     for (int ligne = 1; ligne <= 7; ligne++) {
-        printf("║ %d│ ", ligne);
+        printf("%s║ %d│ ", padding_str, ligne);
         Etudiant *e = ligne_i_etudiant(ligne, plateau);
         Tourelle *d = ligne_i_tourelle(ligne, defense);
 
@@ -183,8 +193,7 @@ void afficher_jeu(Jeu *jeu, Plateau *plateau, Defense *defense) {
             }
         }
     }
-    printf("║    ___________________________________________________________________________ ║\n");
-    printf("║      1    2    3    4    5    6    7    8    9    10   11   12   13   14   15  ║\n");
-    printf("╚════════════════════════════════════════════════════════════════════════════════╝\n");
-
+    printf("%s║    ___________________________________________________________________________ ║\n", padding_str);
+    printf("%s║      1    2    3    4    5    6    7    8    9    10   11   12   13   14   15  ║\n", padding_str);
+    printf("%s╚════════════════════════════════════════════════════════════════════════════════╝\n", padding_str);
 }
