@@ -102,9 +102,20 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: none;
             z-index: 1000;
+            min-width: 300px;
+            width: 30%;
+            max-width: 400px;
+            text-align: center;
         }
         .modal h2 {
             margin: 0 0 10px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .modal p {
+            margin: 15px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
         }
         .modal button {
             margin-top: 10px;
@@ -132,34 +143,36 @@
     </style>
 </head>
 <body>
-    <h1>Enemy Wave Generator</h1>
-    <input type="range" id="slider" min="200" max="2000" value="200" oninput="updateSliderValue()">
-    <p>Selected Wave Size: <span id="sliderValue">200</span></p>
+    <h1>Générateur d'ennemies</h1>
+        <input type="range" id="slider" min="200" max="100000" value="5000" oninput="updateSliderValue()">
+        <p>La cagnotte: <span id="sliderValue">5000</span></p>
 
     <div class="grid" id="grid"></div>
 
     <div class="color-selector">
-        <button id="violet" style="background-color: violet;" ondblclick="showEnemyInfo('V')" onclick="setCurrentColor('V')">V</button>
+        <button id="yellow" style="background-color: yellow;" ondblclick="showEnemyInfo('Z')" onclick="setCurrentColor('Z')">Z</button>
+        <button id="orange" style="background-color: orange;" ondblclick="showEnemyInfo('M')" onclick="setCurrentColor('M')">M</button>
         <button id="red" style="background-color: red;" ondblclick="showEnemyInfo('R')" onclick="setCurrentColor('R')">R</button>
-        <button id="blue" style="background-color: blue;" ondblclick="showEnemyInfo('B')" onclick="setCurrentColor('B')">B</button>
-        <button id="white" style="background-color: white; border: 1px solid #7f8c8d;" onclick="setCurrentColor('')">E</button>
+        <button id="purple" style="background-color: purple;" ondblclick="showEnemyInfo('C')" onclick="setCurrentColor('C')">C</button>
+        <button id="green" style="background-color: green;" ondblclick="showEnemyInfo('E')" onclick="setCurrentColor('E')">E</button>
+        <button id="white" style="background-color: white; border: 1px solid #7f8c8d;" onclick="setCurrentColor('')">⌫</button>
     </div>
 
     <div class="actions">
         <button onclick="resetGrid()">Reset Grid</button>
         <button onclick="downloadFile()">Download</button>
         <div class="random-settings">
-            <label for="randomPercentage">Fill Percentage: <span id="percentageValue">30</span>%</label>
-            <input type="range" id="randomPercentage" min="10" max="100" value="30" oninput="updatePercentageValue()">
+            <label for="randomPercentage">Fill Percentage: <span id="percentageValue">20</span>%</label>
+            <input type="range" id="randomPercentage" min="10" max="100" value="20" oninput="updatePercentageValue()">
             <button onclick="fillRandomly()">Fill Randomly</button>
         </div>
     </div>
 
     <div class="overlay" id="overlay" onclick="closeModal()"></div>
     <div class="modal" id="modal">
-        <h2>Enemy Characteristics</h2>
+        <h2 id="enemyTitle"></h2>
         <p id="enemyDetails"></p>
-        <button onclick="closeModal()">Close</button>
+        <button onclick="closeModal()">Fermer</button>
     </div>
 
     <script>
@@ -215,9 +228,11 @@
 
         function getColorFromLetter(letter) {
             switch (letter) {
-                case 'V': return 'violet';
+                case 'Z': return 'yellow';
+                case 'M': return 'orange';
                 case 'R': return 'red';
-                case 'B': return 'blue';
+                case 'C': return 'purple';
+                case 'E': return 'green';
                 default: return 'white';
             }
         }
@@ -248,7 +263,7 @@
             const blob = new Blob([content], { type: 'text/plain' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'data.txt';
+            link.download = 'niveau.txt';
             link.click();
         }
 
@@ -256,7 +271,7 @@
             const percentage = parseInt(randomPercentage.value, 10) / 100;
             const totalCells = 15 * 7;
             const cellsToFill = Math.round(totalCells * percentage);
-            const colors = ['V', 'R', 'B'];
+            const colors = ['Z', 'M', 'R', 'C', 'E'];
 
             resetGrid();
 
@@ -276,29 +291,52 @@
 
         function showEnemyInfo(color) {
             const enemyInfo = {
-                'V': {
-                    health: 100,
-                    speed: 2,
-                    cost: 5,
-                    damage: 10
+                'Z': {
+                    health: 5,
+                    speed: 1,
+                    cost: 100,
+                    damage: 1,
+                    name: 'Zzzzz'
+                },
+                'M': {
+                    health: 5,
+                    speed: 3,
+                    cost: 350,
+                    damage: 3,
+                    name: 'Majorant'
                 },
                 'R': {
-                    health: 150,
-                    speed: 1.5,
-                    cost: 10,
-                    damage: 20
+                    health: 7,
+                    speed: 1,
+                    cost: 300,
+                    damage: 1,
+                    name: 'Redoublant'
                 },
-                'B': {
-                    health: 80,
-                    speed: 3,
-                    cost: 3,
-                    damage: 5
+                'C': {
+                    health: 2,
+                    speed: 2,
+                    cost: 300,
+                    damage: 4,
+                    name: 'Conditionel'
+                },
+                'E': {
+                    health: 5,
+                    speed: 2,
+                    cost: 300,
+                    damage: 2,
+                    name: 'Etudiant'
                 }
             };
 
             const info = enemyInfo[color];
             if (info) {
-                enemyDetails.innerHTML = `Health: ${info.health}<br>Speed: ${info.speed}<br>Cost if Dead: ${info.cost}<br>Damage: ${info.damage}`;
+                document.getElementById('enemyTitle').textContent = info.name;
+                enemyDetails.innerHTML = `
+                    Points de vie: ${info.health}<br>
+                    Vitesse: ${info.speed}<br>
+                    Gain si mort: ${info.cost} 🪙<br>
+                    Dégâts: ${info.damage}
+                `;
                 modal.style.display = 'block';
                 overlay.style.display = 'block';
             }
