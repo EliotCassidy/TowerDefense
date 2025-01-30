@@ -248,13 +248,13 @@ int creer_tourelle(Jeu *jeu, Tourelle *t, char* infos) {
                     return 1;
                 }
                 else {
-                    if (pow(prix(infos[0]) * (tmp->niveau + 1), 1.5) > jeu->cagnotte) {
-                        printf("Erreur : Vous avez %ld 🪙, l'amélioration coûte %ld 🪙\n", jeu->cagnotte, (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.5));
+                    if (pow(prix(infos[0]) * (tmp->niveau + 1), 1.2) > jeu->cagnotte) {
+                        printf("Erreur : Vous avez %ld 🪙, l'amélioration coûte %ld 🪙\n", jeu->cagnotte, (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.2));
                         free(t);
                         return 1;
                     }
                     else {
-                        jeu->cagnotte -= (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.5);
+                        jeu->cagnotte -= (long) pow(prix(infos[0]) * (tmp->niveau + 1), 1.2);
                         tmp->niveau += 1;
                         tmp->pointsDeVie = (int) (tmp->pointsDeVie + 2*pow(tmp->niveau, 1.2));
                         free(t);
