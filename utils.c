@@ -62,7 +62,7 @@ int degat(char type) {
         case 'T': // Tourelle
             return 1;
         case 'P': // Professeur
-            return 2;
+            return 4;
         case 'B': // Bouclier
             return 0;
         case 'G': // Greve
@@ -80,6 +80,8 @@ int degat(char type) {
             return 1;
         case 'C': // Conditionel
             return 4;
+        case 'E': // Etudiant
+            return 2;
         default:
             return -1;
     }
@@ -125,6 +127,8 @@ int pdv(char type) {
             return 7;
         case 'C':
             return 2;
+        case 'E':
+            return 5;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
@@ -141,6 +145,8 @@ int gain(char type) {
             return 100;
         case 'C':
             return 300;
+        case 'E':
+            return 300;
         default:
             printf(">>>> Mauvais Type\n");
             exit(1);
@@ -156,6 +162,8 @@ int vitesse(char type) {
         case 'Z':
             return 1;
         case 'C':
+            return 2;
+        case 'E':
             return 2;
         default:
             printf(">>>> Mauvais Type\n");
