@@ -142,12 +142,12 @@
         }
     </style>
     <script type="module">
-        import { generateRandomLevel } from './api/generate.js';
+        import { generateRandomLevel } from './generate.js';
         
         // Add this function after your existing scripts
         async function handleUrlPercentage() {
-            const path = window.location.pathname;
-            const percentage = parseInt(path.substring(1));
+            const urlParams = new URLSearchParams(window.location.search);
+            const percentage = parseInt(urlParams.get('fill'));
             
             if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
                 const content = generateRandomLevel(percentage);
