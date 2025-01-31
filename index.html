@@ -141,27 +141,26 @@
             display: none;
         }
     </style>
-    <script type="module">
-        import { generateRandomLevel } from './generate.js';
-        
-        // Add this function after your existing scripts
-        async function handleUrlPercentage() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const percentage = parseInt(urlParams.get('fill'));
-            const money = parseInt(urlParams.get('money')) || 5000;
+        <script type="module">
+            import { generateRandomLevel } from './generate.js';
             
-            if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
-                const content = generateRandomLevel(percentage, money);
-                const blob = new Blob([content], { type: 'text/plain' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'niveau.txt';
-                link.click();
+            async function handleUrlPercentage() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const percentage = parseInt(urlParams.get('fill'));
+                const money = parseInt(urlParams.get('money'));
+                
+                if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
+                    const content = generateRandomLevel(percentage, money);
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'niveau.txt';
+                    link.click();
+                }
             }
-        }
         
-        handleUrlPercentage();
-    </script>
+            handleUrlPercentage();
+        </script>
 </head>
 <body>
     <h1>Générateur d'ennemies</h1>
