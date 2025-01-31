@@ -1,0 +1,16 @@
+{
+  "name": "towerdefense",
+  "version": "1.0.0",
+  "description": "## Overview   This project is a simplified, turn-based Tower Defense game inspired by \"Plants vs. Zombies.\" The game simulates a battle between a player defending a university from waves of enemy students.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
