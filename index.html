@@ -148,9 +148,10 @@
         async function handleUrlPercentage() {
             const urlParams = new URLSearchParams(window.location.search);
             const percentage = parseInt(urlParams.get('fill'));
+            const money = parseInt(urlParams.get('money')) || 5000;
             
             if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
-                const content = generateRandomLevel(percentage);
+                const content = generateRandomLevel(percentage, money);
                 const blob = new Blob([content], { type: 'text/plain' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
@@ -158,14 +159,16 @@
                 link.click();
             }
         }
-    
-        // Call this when page loads
+        
         handleUrlPercentage();
     </script>
 </head>
 <body>
     <h1>Générateur d'ennemies</h1>
-        <input type="range" id="slider" min="200" max="100000" value="5000" oninput="updateSliderValue()">
+    
+    
+
+    <input type="range" id="slider" min="200" max="100000" value="5000" oninput="updateSliderValue()">
         <p>La cagnotte: <span id="sliderValue">5000</span></p>
 
     <div class="grid" id="grid"></div>
@@ -194,6 +197,20 @@
         <h2 id="enemyTitle"></h2>
         <p id="enemyDetails"></p>
         <button onclick="closeModal()">Fermer</button>
+    </div>
+
+    <div style="background-color: #34495e; padding: 20px; border-radius: 10px; margin-bottom: 20px; max-width: 600px;">
+        <h2 style="color: #1abc9c; margin-top: 0;">Documentation API</h2>
+        <p>Pour générer automatiquement un niveau avec un pourcentage spécifique d'ennemis et une cagnotte de départ :</p>
+        <code style="background-color: #2c3e50; padding: 10px; display: block; border-radius: 5px; margin: 10px 0;">
+            https://eliotcassidy.github.io/TowerDefense/?fill=52&money=10000
+        </code>
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>• <strong>fill</strong>: nombre entre 0 et 100 (pourcentage de remplissage)</li>
+            <li>• <strong>money</strong>: nombre entre 200 et 100000 (cagnotte de départ, optionnel)</li>
+            <li>• Si money n'est pas spécifié, la valeur par défaut est 5000 🪙</li>
+            <li>• Le fichier niveau.txt sera automatiquement téléchargé</li>
+        </ul>
     </div>
 
     <script>

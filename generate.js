@@ -1,6 +1,5 @@
-export function generateRandomLevel(percentage) {
-    const value = 5000;
-    let content = `${value}\n`;
+export function generateRandomLevel(percentage, money = 5000) {
+    let content = `${money}\n`;
     const totalCells = 15 * 7;
     const cellsToFill = Math.round(totalCells * (percentage / 100));
     const colors = ['Z', 'M', 'R', 'C', 'E'];
