@@ -149,8 +149,11 @@
                 const percentage = parseInt(urlParams.get('fill'));
                 const money = parseInt(urlParams.get('money'));
                 
+                console.log('Money parameter:', money); // Debug line
+                
                 if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
                     const content = generateRandomLevel(percentage, money);
+                    console.log('Generated content:', content); // Debug line
                     const blob = new Blob([content], { type: 'text/plain' });
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
