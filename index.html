@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enemy Wave Generator</title>
+    <title>Générateur d'ennemies</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -159,12 +159,12 @@
     </div>
 
     <div class="actions">
-        <button onclick="resetGrid()">Reset Grid</button>
-        <button onclick="downloadFile()">Download</button>
+        <button onclick="resetGrid()">Rénitialiser</button>
+        <button onclick="downloadFile()">Télécharger</button>
         <div class="random-settings">
-            <label for="randomPercentage">Fill Percentage: <span id="percentageValue">20</span>%</label>
+            <label for="randomPercentage">Pourcentage de remplissage: <span id="percentageValue">20</span>%</label>
             <input type="range" id="randomPercentage" min="10" max="100" value="20" oninput="updatePercentageValue()">
-            <button onclick="fillRandomly()">Fill Randomly</button>
+            <button onclick="fillRandomly()">Remplir</button>
         </div>
     </div>
 
