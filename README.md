@@ -1,66 +1,94 @@
-# Tower Defense Game (C Project)  
+# Dau Invaders 🎮
 
-## Overview  
-This project is a simplified, turn-based Tower Defense game inspired by "Plants vs. Zombies." The game simulates a battle between a player defending a university from waves of enemy students.
+Tower Defense game implemented in C for the Université Paris Dauphine - PSL Programming Course
 
-## Features  
-- Single-player gameplay against an AI opponent.  
-- ASCII-based interface for visualization.  
-- Waves of enemies with varying types and characteristics.  
-- Multiple types of defense towers with unique abilities.  
-- Scalable difficulty levels, from basic functionality to advanced features like graphical interfaces.  
+## 📝 Description
 
-## Project Structure  
-The project includes the following key files and folders:  
-- `src/` : Source code files for the game logic and mechanics.  
-- `include/` : Header files defining the structures and prototypes.  
-- `levels/` : Predefined game levels in standardized text files.  
-- `README.md` : This file, detailing the project.  
-- `dev.pdf` : A detailed report explaining design choices, algorithms, and challenges.  
-- `Makefile` : (Optional) To simplify the build process.  
+Dau Invaders is a terminal-based Tower Defense game where players strategically place towers to defend against waves of students. The project demonstrates advanced C programming techniques, including dynamic memory management, data structures, and game logic implementation.
 
-## Compilation and Execution  
-### Prerequisites  
-- GCC compiler (tested with version 9.4+).  
-- A terminal supporting ANSI escape codes (e.g., Unix, macOS, or a configured Windows terminal).  
+## ✨ Features
 
-### Compilation  
-Use the following command to compile the project:
+- Multiple tower and enemy types
+- Strategic tower placement and upgrades
+- Custom wave generation
+- Save and load game functionality
+- Scoring system
+
+## 🛠 Prerequisites
+
+- GCC Compiler
+- Unix-like operating system (Linux/macOS)
+
+## 🚀 Installation
+
+1. Clone the repository:
 ```bash
-gcc -Wall -g -o tower_defense src/*.c
+git clone https://github.com/EliotCassidy/TowerDefense.git
+cd TowerDefense
 ```
 
-### Running the Game  
-Run the compiled executable with:
+2. Compile the project:
 ```bash
-./tower_defense [level_file]
-```
-- Replace `[level_file]` with the path to a game level file (e.g., `levels/level1.txt`).
-
-### Memory Debugging  
-Use `valgrind` to ensure proper memory management:
-```bash
-valgrind ./tower_defense [level_file]
+gcc *.c -o dauInvaders -lm -Wall
 ```
 
-## Game Rules  
-1. The player places defensive towers on a 7x15 grid before the game starts, limited by available credits.  
-2. Enemy students attempt to invade, appearing turn by turn.  
-3. Each turn involves:  
-   - Enemy spawns and movements.  
-   - Towers attacking enemies.  
-   - Resolution of interactions.  
-4. The game ends when:  
-   - The university is breached (loss).  
-   - All enemies are defeated (win).  
+## 🎮 How to Play
 
-## Levels  
-Levels are defined in plain text files with the following structure:  
-1. First line: Total credits available to the player.  
-2. Remaining lines: Enemy spawn schedule, in the format:  
-   ```plaintext
-   [turn_number] [line_number] [enemy_type]
-   ```
+1. Ensure you have a `niveau.txt` file in the project directory
+2. Run the game:
+```bash
+./dauInvaders
+```
 
-## Contributions and License  
-This project was developed as part of the L2 MIDO C Programming course at Dauphine University (2024-2025). All code must adhere to the academic integrity policies, and unauthorized use of external resources is strictly prohibited.
+3. Game Modes:
+- Single wave mode
+- Load saved game
+
+## 🌐 Wave Generator
+
+Create custom game waves using the online tool:
+[Wave Generation Tool](https://eliotcassidy.github.io/TowerDefense)
+
+## 📋 Project Structure
+
+- `game.c`: Main game loop and high-level functions
+- `meca.c`: Game mechanics implementation
+- `ecriture.c`: Display and menu rendering
+- `lecture.c`: File reading and game state initialization
+- `utils.c`: Utility functions
+- `fichier.c`: Save and ranking management
+
+## 👥 Authors
+
+- Eliot Cassidy
+- Nicolas de Pellegars
+
+## 📄 License
+
+[To be determined]
+
+## 🙏 Acknowledgments
+
+- Emmanuel Lazard (Course Instructor)
+- Ariane Ravier (Teaching Assistant)
+- Université Paris Dauphine - PSL
+
+
+## 🐛 Known Issues
+
+- No infinite game mode (currently in development)
+- Limited to terminal-based gameplay
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+
+## 🔍 Technical Details
+
+The project showcases:
+- Advanced memory management
+- Dynamic data structures
+- Complex game logic implementation
+- File I/O operations
+- Input validation techniques
